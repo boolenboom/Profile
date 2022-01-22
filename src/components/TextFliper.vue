@@ -55,6 +55,9 @@ function animationCoolDown(ev){
 .fliper{
     position: relative;
     overflow-y: hidden;
+    h1{
+        margin: 0;
+    }
     .text{
         position: absolute;
         top: 0;
@@ -68,6 +71,7 @@ function animationCoolDown(ev){
     }
     .hidden{
         opacity: 0;
+        pointer-events: none;
     }
     @keyframes flipUp {
         0%{
