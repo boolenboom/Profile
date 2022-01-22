@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+import eventChannel from '../assets/public-js/eventChannel.js';
 const props = defineProps({
     textList: {
         type: Array,
@@ -17,12 +18,27 @@ const props = defineProps({
 let { textList } = toRefs( props );
 let stateList = reactive([]);
 
-watch( textList, listFresh);
-onMounted( listFresh );
+watch( textList, ()=>{
+    listFresh();
+    listListen();
+});
+onMounted( ()=>{
+    listFresh();
+    listListen();
+} );
 
 function listFresh(){
     stateList.length = textList.value.length;
     stateList.fill( 'running', 0 );
+}
+function listListen(){
+    stateList.forEach( (val, currId)=>{
+        eventChannel
+        .channel( `state${ currId }` )
+        .listen( 'run',  function(){
+            stateList[currId] = 'running';
+        });
+    })
 }
 
 let duration = ref(2);
@@ -30,11 +46,11 @@ let duration = ref(2);
 function animationCoolDown(ev){
     const currId = ev.target.dataset.id;
     const length = textList.value.length;
-    const coolTime = 1000 * (duration.value * (length - 1) + duration.value / 0.8 * 0.1 * (length - 2));
     stateList[currId] = 'paused';
-    setTimeout( function(){
-        stateList[currId] = 'running';
-    }, coolTime );
+    console.log( currId + ' is paused at ' + Date() );
+    eventChannel
+    .channel( `state${ (+currId + 1) % length }` )
+    .trigger( 'run' );
     //issue - 背景作業時，時間間距會變長，導致動畫順序亂掉
 }
 </script>
