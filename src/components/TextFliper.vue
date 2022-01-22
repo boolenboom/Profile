@@ -35,6 +35,7 @@ function animationCoolDown(ev){
     setTimeout( function(){
         stateList[currId] = 'running';
     }, coolTime );
+    //issue - 背景作業時，時間間距會變長，導致動畫順序亂掉
 }
 </script>
 <template>
