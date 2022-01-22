@@ -9,8 +9,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <HelloWorld msg="Hello Vue 3 + Vite + AlanLee" />
 </template>
 
-<style>
-@import url(../src/assets/public-style/main.scss);
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

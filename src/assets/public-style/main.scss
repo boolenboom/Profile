@@ -1,5 +1,19 @@
+
 *{
     padding: 0;
     box-sizing: border-box;
     text-decoration: unset;
+}
+
+.container{
+    margin: auto;
+    @include phone-width{
+        width: 360px;
+    }
+    @include pad-width{
+        width: 540px;
+    }
+    @include pc-width{
+        width: 1140px;
+    }
 }
