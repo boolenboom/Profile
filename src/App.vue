@@ -10,6 +10,7 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style>
+@import url(../src/assets/public-style/main.scss);
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,11 +18,5 @@ import HelloWorld from './components/HelloWorld.vue'
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-*{
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  text-decoration: unset;
 }
 </style>
