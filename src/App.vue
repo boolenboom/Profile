@@ -8,7 +8,7 @@ import LoadingScene from './components/LoadingScene.vue';
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + Vite + AlanLee" />
-  <LoadingScene></LoadingScene>
+  <LoadingScene :isLoadComplete="true"></LoadingScene>
 </template>
 
 <style lang="scss">

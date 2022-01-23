@@ -1,25 +1,35 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 
-let isLoadComplete = ref(false);
+const props = defineProps({
+    isLoadComplete:{
+        type:Boolean,
+        default(){
+            return false;
+        }
+    }
+})
+
+let { isLoadComplete } = toRefs(props);
+let isLoadedToHidden = ref(false);
 
 function CheckLoadStatus(){
-    const self = this;
-    if(document.visibilityState == 'visible'){
+    console.log(props);
+    if(document.visibilityState == 'visible' && isLoadComplete.value){
         loaded();
     }
     else{
-        setTimeout(self, 3000);
+        setTimeout(CheckLoadStatus, 3000);
     }
 }
 function loaded(){
-    isLoadComplete.value = true;
+    isLoadedToHidden.value = true;
 }
 
 setTimeout( CheckLoadStatus, 5000 );
 </script>
 <template>
-<div class="pos-fixed fullScreen zIndex-L1 bg-halfBlue" :class="{'dis-none':isLoadComplete}">
+<div class="pos-fixed fullScreen zIndex-L1 bg-halfBlue" :class="{'dis-none':isLoadedToHidden}">
     <h1 class="pos-center">Loading...</h1>
 </div>
 </template>
