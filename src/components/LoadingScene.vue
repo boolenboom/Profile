@@ -34,30 +34,6 @@ setTimeout( CheckLoadStatus, 5000 );
 </div>
 </template>
 <style lang="scss">
-.pos-fixed{
-    position: fixed;
-}
-.pos-center{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1ch;
-    width: 100%;
-    height: 100%;
-}
-.fullScreen{
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-}
-.zIndex-L1{
-    z-index: 1000;
-}
-.dis-none{
-    display: none;
-}
 .bg-halfBlue{
     background-color: rgba($color: #21326a, $alpha: .8);
     *{
