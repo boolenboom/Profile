@@ -35,7 +35,7 @@ setTimeout( CheckLoadStatus, 5000 );
 </template>
 <style lang="scss">
 .bg-halfBlue{
-    background-color: rgba($color: #21326a, $alpha: .8);
+    background-color: rgba($color: $main-color, $alpha: .8);
     *{
         color: #ababcd;
     }
