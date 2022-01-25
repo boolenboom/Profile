@@ -37,7 +37,7 @@ setTimeout( CheckLoadStatus, 5000 );
 .bg-halfBlue{
     background-color: rgba($color: $main-color, $alpha: .8);
     *{
-        color: #ababcd;
+        color: $text-color;
     }
 }
 </style>
