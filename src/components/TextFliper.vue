@@ -17,6 +17,7 @@ const props = defineProps({
 
 let { textList } = toRefs( props );
 let stateList = reactive([]);
+let longestString = ref('');
 
 watch( textList, ()=>{
     listFresh();
@@ -29,11 +30,13 @@ function listFresh(){
     stateList.length = textList.value.length;
     stateList[0] = 'running';
     stateList.fill( 'paused', 1 );
+    let sortList = Array.from(textList.value);
+    longestString.value = sortList.sort(( a, b )=>b.length - a.length)[0];
 }
 
 let duration = ref(2);
 
-function animationCoolDown(ev){
+function animationActiveChange(ev){
     const currId = ev.target.dataset.id;
     const length = textList.value.length;
     const nextId = (+currId + 1) % length
@@ -51,10 +54,10 @@ function isRun(id){
             :data-id=" index "
             :class="{ 'active' : isRun(index) }"
             :style="`--duration: ${ (duration / 0.8) }s;`"
-            @animationend="animationCoolDown"> 
+            @animationend="animationActiveChange"> 
             {{text}}
         </h1>
-        <h1 class="hidden">textHeight</h1>
+        <h1 class="hidden">{{longestString}}</h1>
     </div>
 </template>
 <style lang="scss">
