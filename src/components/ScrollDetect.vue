@@ -10,8 +10,8 @@ const { customId } = toRefs(props);
 
 let isEnter = ref('initial');
 function scrollHandler( DetectDom ) {
-    const enterPoint = DetectDom.offsetTop - 100;
-    const leavePoint = DetectDom.offsetTop + 200;
+    const enterPoint = DetectDom.offsetTop + DetectDom.clientHeight/2;
+    const leavePoint = enterPoint + 350;
     return ()=>{
         console.log(enterPoint, leavePoint);
         window.requestAnimationFrame(() => {
