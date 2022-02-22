@@ -3,12 +3,14 @@ import HelloWorld from '../components/HelloWorld.vue';
 import Navigation from '../components/Navigation.vue';
 import Hero from '../components/Hero.vue';
 import Summary from '../components/Summary.vue';
+import Portfolio from '../components/Portfolio.vue';
 
 </script>
 <template>
 <Navigation></Navigation>
 <Hero></Hero>
 <Summary></Summary>
+<Portfolio></Portfolio>
 <HelloWorld msg="Part 1"></HelloWorld>
 <HelloWorld msg="Part 2"></HelloWorld>
 <HelloWorld msg="Part 3"></HelloWorld>

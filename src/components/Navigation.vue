@@ -41,6 +41,7 @@ onMounted(()=>{
     left: 0;
     padding: 30px;
     transition: transform .35s;
+    z-index: 999;
     .LOGO{
         margin-left: 0;
         margin-right: auto;
