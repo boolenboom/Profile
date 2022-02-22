@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+
 const props = defineProps({
     textList: {
         type: Array,
@@ -16,25 +17,34 @@ const props = defineProps({
 
 let { textList } = toRefs( props );
 let stateList = reactive([]);
+let longestString = ref('');
 
-watch( textList, listFresh);
-onMounted( listFresh );
+watch( textList, ()=>{
+    listFresh();
+});
+onMounted( ()=>{
+    listFresh();
+} );
 
 function listFresh(){
     stateList.length = textList.value.length;
-    stateList.fill( 'running', 0 );
+    stateList[0] = 'running';
+    stateList.fill( 'paused', 1 );
+    let sortList = Array.from(textList.value);
+    longestString.value = sortList.sort(( a, b )=>b.length - a.length)[0];
 }
 
 let duration = ref(2);
 
-function animationCoolDown(ev){
+function animationActiveChange(ev){
     const currId = ev.target.dataset.id;
     const length = textList.value.length;
-    const coolTime = 1000 * (duration.value * (length - 1) + duration.value / 0.8 * 0.1 * (length - 2));
+    const nextId = (+currId + 1) % length
     stateList[currId] = 'paused';
-    setTimeout( function(){
-        stateList[currId] = 'running';
-    }, coolTime );
+    stateList[nextId] = 'running';
+}
+function isRun(id){
+    return (stateList[id] == 'running')
 }
 </script>
 <template>
@@ -42,32 +52,36 @@ function animationCoolDown(ev){
         <h1 v-for=" (text, index) of textList" 
             class="text"
             :data-id=" index "
-            :style="`--duration: ${ (duration / 0.8) }s;
-                    --delay: ${ index * ((duration / 0.8) * (1 - 0.1)) }s;
-                    --playState: ${ stateList[index] }`"
-            @animationiteration="animationCoolDown"> 
+            :class="{ 'active' : isRun(index) }"
+            :style="`--duration: ${ (duration / 0.8) }s;`"
+            @animationend="animationActiveChange"> 
             {{text}}
         </h1>
-        <h1 class="hidden">textHeight</h1>
+        <h1 class="hidden">{{longestString}}</h1>
     </div>
 </template>
 <style lang="scss">
 .fliper{
     position: relative;
     overflow-y: hidden;
+    h1{
+        margin: 0;
+    }
     .text{
         position: absolute;
         top: 0;
         width: fit-content;
-        animation: flipUp 
-            var( --duration, 0s )  
-            var( --delay, 0s ) 
-            infinite 
-            var( --playState, 'paused') ;
         transform: translateY( 100% );
     }
     .hidden{
         opacity: 0;
+        pointer-events: none;
+    }
+    .active{
+        animation: flipUp 
+            var( --duration, 0s )  
+            var( --delay, 0s ) 
+            1;
     }
     @keyframes flipUp {
         0%{
