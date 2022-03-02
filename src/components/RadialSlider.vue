@@ -57,13 +57,13 @@ watch( nextIndex, (newVal, oldVal)=>{
     statusList[prev] += ' is-animating scale-down ';
 
     if(newVal == 0 && oldVal == contentAmount.value - 1){
-        slideWay.value = -1;
-    }
-    else if(newVal == contentAmount.value - 1 && oldVal == 0 ){
         slideWay.value = 1;
     }
+    else if(newVal == contentAmount.value - 1 && oldVal == 0 ){
+        slideWay.value = -1;
+    }
     else{
-        slideWay.value = currentIndex.value - nextIndex.value;
+        slideWay.value = nextIndex.value - currentIndex.value;
     }
 });
 
@@ -90,20 +90,9 @@ function visibleChange(eventInfo){
                 </div>
             </li>
         </ul>
-        <!-- <ul class="slider-navigation dis-flex">
-            <li class="prev">
-                <a href="#0" @click.prevent="slideTo(-1)">Prev</a>
-            </li>
-            <li class="next">
-                <a href="#0" @click.prevent="slideTo(1)">Next</a>
-            </li>
-        </ul> -->
     </div>
 </template>
 <style lang="scss">
-ol,ul{
-    list-style: none;
-}
 .radial-slider-wrapper{
     position: relative;
 }
@@ -116,7 +105,7 @@ ol,ul{
         height: 100vh;
         opacity: 0;
         pointer-events: none;
-        filter: grayscale(30%);
+        filter: grayscale(10%);
         background-image: var(--imageUrl) ;
         background-repeat: no-repeat;
         background-position: center center;
@@ -125,11 +114,12 @@ ol,ul{
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient($main-color 2.5%, #cc888888 ,$main-color 95%);
+            background-image: linear-gradient($main-color 2.5%, rgba($color: $main-color, $alpha: .8), $main-color 95%);
             z-index: -1;
         }
         .wrapper{
             transition: all .4s ease-out;
+            color: $text-color;
         }
     }
     > li.visible{
@@ -178,16 +168,16 @@ ol,ul{
         clip-path: circle( var(--progress-percent, 5%) at 92.14% 50%);
         transform-origin: 92.14% 50%;
         @media (max-aspect-ratio: 1/1) {
-            clip-path: circle( var(--progress-percent, 20%) at 90% 100%);
-            transform-origin: 100% 100%;
+            clip-path: circle( var(--progress-percent, 20%) at 90% 80%);
+            transform-origin: 100% 80%;
         }
     }
     > li.prev-slide{
         clip-path: circle( var(--progress-percent, 5%) at 7.86% 50%);
         transform-origin: 7.86% 50%;
         @media (max-aspect-ratio: 1/1) {
-            clip-path: circle( var(--progress-percent, 20%) at 10% 100%);
-            transform-origin: 0% 100%;
+            clip-path: circle( var(--progress-percent, 20%) at 10% 80%);
+            transform-origin: 0% 80%;
         }
     }
 }
@@ -197,26 +187,6 @@ ol,ul{
     }
     to{
         transform: scale(1);
-    }
-}
-.slider-navigation{
-    z-index: 100;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: space-between;
-    padding: calc( 50vh - 3.93vw ) 3.93%;
-    pointer-events: none;
-    > li{
-        a{
-            display: block;
-            width: 7.86vw;
-            height: 7.86vw;
-            background-color: #cccccc88;
-            pointer-events: all;
-        }
     }
 }
 </style>
