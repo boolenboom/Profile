@@ -4,10 +4,11 @@ import RadialSlider from './RadialSlider.vue';
 
 </script>
 <template>
+
     <div class="transitionAnimation">
         <BlackHole aniText="work&link"></BlackHole>
     </div>
-    <div class="portfolio">
+    <div class="works">
         <RadialSlider 
         :imageList="['https://picsum.photos/id/69/1400/800?blur=2',
                     'https://picsum.photos/id/666/1400/800',
@@ -17,23 +18,30 @@ import RadialSlider from './RadialSlider.vue';
             <template #slide1>
                 <h2>Travel Taiwan</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur.</p>
-                <a href="#0" class="btn">Learn More</a>
+                <a href="#0" class="btn">前往</a>
             </template>
             <template #slide2>
                 <h2>CSS Rush</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur.</p>
-                <a href="#0" class="btn">Learn More</a>
+                <a href="#0" class="btn">前往</a>
             </template>
             <template #slide3>
                 <h2>Lee's profile</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur.</p>
-                <a href="#0" class="btn">Learn More</a>
+                <a href="#0" class="btn">前往</a>
             </template>
             <template #slide4>
                 <h2>Slide #4 Title</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur.</p>
-                <a href="#0" class="btn">Learn More</a>
+                <a href="#0" class="btn">前往</a>
             </template>
         </RadialSlider>
     </div>
 </template>
+<style lang="scss">
+.works{
+    position: sticky;
+    top: 0;
+    z-index: -1;
+}
+</style>
