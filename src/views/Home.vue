@@ -4,10 +4,12 @@ import Navigation from '../components/Navigation.vue';
 import Hero from '../components/Hero.vue';
 import Summary from '../components/Summary.vue';
 import Portfolio from '../components/Portfolio.vue';
+import FixedBackground from '../components/FixedBackground.vue';
 
 </script>
 <template>
 <Navigation></Navigation>
+<FixedBackground></FixedBackground>
 <Hero></Hero>
 <Summary></Summary>
 <Portfolio></Portfolio>
