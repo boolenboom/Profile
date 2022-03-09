@@ -1,9 +1,9 @@
 <script setup>
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { onMounted, toRefs } from 'vue';
 gsap.registerPlugin(ScrollTrigger);
 
-import { onMounted, toRefs } from 'vue';
 
 const props = defineProps({
     aniText:{
@@ -26,11 +26,15 @@ onMounted(()=>{
         startAt: {
             opacity: 0,
             y: function ( index ) {
-                return gsap.utils.interpolate(0, 180, 1 - Math.pow(+((index / textAmount.value) - 1), 4)) + '%';
+                return gsap.utils.interpolate(0, 200, 1 - Math.pow(+((index / textAmount.value) - 1), 4)) + '%';
             },
             zIndex: function( index ) {
                 return 100 - index;
             },
+            clipPath: function( index ){
+                let offset = gsap.utils.interpolate(0, 100, 1 - Math.pow(+((index / textAmount.value) - 1), 8));
+                return `polygon(0 ${offset}%, 100% ${offset}%, 100% 100%, 0 100%)`;
+            }
         },
         duration:0.1
     })
@@ -41,6 +45,7 @@ onMounted(()=>{
         duration: 2
     })
     .to( '.blackHole-animation-stage .blackHole-text',{
+        clipPath: 'none',
         transformOrigin: '150% 50%',
         x: '-100%',
         y: '50%',
@@ -77,7 +82,6 @@ onMounted(()=>{
     overflow: hidden;
     position: relative;
     height: 100vh;
-    background-color: #2185c8;
     transform-style: preserve-3d;
     perspective: 50px;
     perspective-origin: 50% 50%;
@@ -87,9 +91,9 @@ onMounted(()=>{
         z-index: 10;
         font-size: 50vmin;
         line-height: .75;
-        background-color: #2185c8;
         word-break: break-all;
         white-space: nowrap;
     }
+    clip-path: none;
 }
 </style>

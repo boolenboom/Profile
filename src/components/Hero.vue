@@ -13,8 +13,8 @@ let maskGraph = ref("M224 50Q250 28 270 50S320 80 400 290Q 467 447 384 440S10 42
             </div>
         </div>
         <div class="intro">
-            <h1>HI !</h1>
-            <div class="dis-flex greet"><h1> I 'm </h1><TextFliper :textList="['Alan Lee.', 'Front-End Developer.', 'Gamer.']"></TextFliper></div>
+            <h1>嗨 !</h1>
+            <div class="dis-flex greet"><h1> 我是 </h1><TextFliper :textList="['李東遠', 'Front-End Developer.', '前端工程師']"></TextFliper></div>
             <div class="personalInfo">
                 <h3>臺中教育大學 數位內容科技學系</h3>
                 <h3>0911572605</h3>
@@ -31,8 +31,7 @@ let maskGraph = ref("M224 50Q250 28 270 50S320 80 400 290Q 467 447 384 440S10 42
 <style lang="scss">
 #hero{
     height: 100vh;
-    background-color: $main-color;
-    color: $text-color;
+    pointer-events: none;
     h1{
         font-size: 3rem;
         @include pad-width{
@@ -48,6 +47,7 @@ let maskGraph = ref("M224 50Q250 28 270 50S320 80 400 290Q 467 447 384 440S10 42
     }
     .intro{
         text-align: start;
+        z-index: 1;
         .personalInfo{
             margin: 30px 6px;
             h3{
