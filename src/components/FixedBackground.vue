@@ -2,13 +2,23 @@
 import gsap from 'gsap';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
+// * 物體 transform 資料
 let rotX = ref(0), rotY = ref(0), rotZ = ref(0);
 let posX = ref(0), posY = ref(0);
-let width = 0, height = 0;
+let computedTransform = computed(()=>{
+    return `--rotX:${rotX.value}deg;
+            --rotY:${rotY.value}deg;
+            --rotZ:${rotZ.value}deg;
+            --posX:${posX.value}vmin;
+            --posY:${posY.value}vmin;`
+})
+// *
+
+// * 使用者互動行為
+let viewWidth = 0, viewHeight = 0;
 function setScreenWidthHeight(){
-    width = window.visualViewport.width;
-    height = window.visualViewport.height;
-    console.log(width, height);
+    viewWidth = window.visualViewport.width;
+    viewHeight = window.visualViewport.height;
 }
 onMounted(()=>{
     setScreenWidthHeight();
@@ -20,8 +30,8 @@ onUnmounted(()=>{
 
     function eyeTrack(event){
         window.requestAnimationFrame(()=>{
-            let hozPercentage = event.x / width
-            let verPercentage = event.y / height;
+            const hozPercentage = event.x / viewWidth
+            const verPercentage = event.y / viewHeight;
             rotX.value = gsap.utils.interpolate(-15, 15, verPercentage);
             rotY.value = gsap.utils.interpolate(15, -15, hozPercentage);
             rotZ.value = 0;
@@ -33,14 +43,12 @@ onUnmounted(()=>{
     }
     function eyeInit(){
         window.requestAnimationFrame(()=>{
-            rotX.value = 0;
-            rotY.value = 0;
-            rotZ.value = 0;
-            posX.value = 0;
-            posY.value = 0;
+            [rotX.value, rotY.value, rotZ.value, posX.value, posY.value] = Array(5).fill(0);
         })
     }
+// *
 
+// * 眨眼
 let winkTiming = ref(true);
     function wink(){
         winkTiming.value = true;
@@ -53,38 +61,11 @@ let winkTiming = ref(true);
 onMounted(()=>{
     winkTimer();
 })
+// *
 
-let computedTransform = computed(()=>{
-    return `--rotX:${rotX.value}deg;
-            --rotY:${rotY.value}deg;
-            --rotZ:${rotZ.value}deg;
-            --posX:${posX.value}vmin;
-            --posY:${posY.value}vmin;`
-})
 </script>
 <template>
     <svg class="dis-hidden">
-        <clipPath id="circle" clipPathUnits="objectBoundingBox">
-            <path
-                d="M.95,.5
-                A.5.5,0,0,1,.92 .67
-                .5.5,0,0,1,.82.82
-                .5.5,0,0,1,.67,.92,
-                .5.5,0,0,1,.5,.95,
-                .5.5,0,0,1,.33,.92,
-                .5.5,0,0,1,.18.82
-                .5.5,0,0,1,.08,.67
-                .5.5,0,0,1,.05,.5
-                .5.5,0,0,1,.08,.33
-                .5.5,0,0,1,.18.18
-                .5.5,0,0,1,.33,.08,
-                .5.5,0,0,1,.5,.05,
-                .5.5,0,0,1,.67,.08,
-                .5.5,0,0,1,.82.18
-                .5.5,0,0,1,.92,.33
-                .5.5,0,0,1,.95,.5Z"
-            />
-        </clipPath>
         <clipPath id="triangle" clipPathUnits="objectBoundingBox">
             <path 
             d='M.33.1
