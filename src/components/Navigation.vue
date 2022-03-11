@@ -1,4 +1,4 @@
-<script setup>import { onMounted, ref } from 'vue';
+<script setup>import { onMounted, onUnmounted, ref } from 'vue';
 
 let direction = ref('scrollUp');
 let checkScrollDirect = function (){
@@ -22,6 +22,9 @@ let checkScrollDirect = function (){
 }
 onMounted(()=>{
     window.addEventListener( 'scroll', checkScrollDirect() );
+})
+onUnmounted(()=>{
+    window.removeEventListener( 'scroll', checkScrollDirect() );
 })
 </script>
 <template>
