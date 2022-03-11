@@ -15,30 +15,27 @@ let computedTransform = computed(()=>{
 // *
 
 // * 使用者互動行為
-let viewWidth = 0, viewHeight = 0;
-function setScreenWidthHeight(){
-    viewWidth = window.visualViewport.width;
-    viewHeight = window.visualViewport.height;
-}
-onMounted(()=>{
-    setScreenWidthHeight();
-    window.addEventListener('resize',setScreenWidthHeight);
-})
-onUnmounted(()=>{
-    window.removeEventListener('resize',setScreenWidthHeight);
-})
+let idleDelay = 0;
 
     function eyeTrack(event){
         window.requestAnimationFrame(()=>{
-            const hozPercentage = event.x / viewWidth
-            const verPercentage = event.y / viewHeight;
-            rotX.value = gsap.utils.interpolate(-15, 15, verPercentage);
-            rotY.value = gsap.utils.interpolate(15, -15, hozPercentage);
+            const hozPercentage = event.x / window.visualViewport.width;
+            const verPercentage = event.y / window.visualViewport.height;
+            rotX.value = gsap.utils.interpolate(-10, 10, verPercentage);
+            rotY.value = gsap.utils.interpolate(10, -10, hozPercentage);
             rotZ.value = 0;
-            const hozInvolve = Math.abs((verPercentage - 0.5) * 2),
-                verInvolve = Math.abs((hozPercentage - 0.5) * 2);
-            posX.value = gsap.utils.interpolate([-18, -12, 0, 12, 18], hozPercentage * (hozInvolve * -0.3 + 1) + 0.15 * hozInvolve);
-            posY.value = gsap.utils.interpolate([-18, -12, 0, 12, 18], verPercentage * (verInvolve * -0.3 + 1) + 0.15 * verInvolve);
+            
+            const coordinateMapping = {
+                x:Math.abs((verPercentage - 0.5) * 2),
+                y:Math.abs((hozPercentage - 0.5) * 2)
+            }
+            const hozInvolve = hozPercentage * (coordinateMapping.x * -0.3 + 1) + 0.15 * coordinateMapping.x,
+                verInvolve = verPercentage * (coordinateMapping.y * -0.3 + 1) + 0.15 * coordinateMapping.y;
+            posX.value = gsap.utils.interpolate([-24, -16, 0, 16, 24], hozInvolve);
+            posY.value = gsap.utils.interpolate([-24, -16, 0, 16, 24], verInvolve);
+
+            clearTimeout( idleDelay );
+            idleDelay = setTimeout( eyeInit, 3000);
         })
     }
     function eyeInit(){
@@ -46,6 +43,14 @@ onUnmounted(()=>{
             [rotX.value, rotY.value, rotZ.value, posX.value, posY.value] = Array(5).fill(0);
         })
     }
+onMounted(()=>{
+    window.addEventListener('pointerdown', eyeTrack);
+    window.addEventListener('pointermove', eyeTrack);
+})
+onUnmounted(()=>{
+    window.removeEventListener('pointerdown', eyeTrack);
+    window.removeEventListener('pointermove', eyeTrack);
+})
 // *
 
 // * 眨眼
@@ -77,7 +82,7 @@ onMounted(()=>{
             .2.2,0,0,0,.33.1Z'/>
         </clipPath>
     </svg>
-    <div class="fixedBackground pos-fixed fullScreen" @pointerdown="eyeTrack" @pointermove="eyeTrack" @pointerleave="eyeInit">
+    <div class="fixedBackground pos-fixed fullScreen">
         <div class="stage dis-flex">
             <div class="sphere" :style="computedTransform">
                 <div class="eye" :class="{'wink':winkTiming}" @transitionend="winkTimer"></div>
@@ -89,8 +94,6 @@ onMounted(()=>{
 .fixedBackground {
     z-index: 0;
     background-color: $main-color;
-    transform-style: preserve-3d;
-    perspective: 200px;
 }
 .sphere {
     position: relative;
@@ -98,26 +101,26 @@ onMounted(()=>{
     height: 90vmin;
     border-radius: 50%;
     background-color: #fff;
-    transform: translate3d( 0, 0, 50px ) rotateX(var(--rotX)) rotateY(var(--rotY));
+    transform: translate3d( 0, 0, 20px ) rotateX(calc( -1 * var(--rotX))) rotateY(calc( -1 * var(--rotY)));
     transition: transform .4s ease-out;
     transform-style: preserve-3d;
-    perspective: 200px;
+    perspective: 100px;
     .eye{
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate3d(calc( -50% + var(--posX, 0px) ), calc( -50% + var(--posY, 0px) ), 100px) 
+        transform: translate3d(calc( -50% + var(--posX, 0px) ), calc( -50% + var(--posY, 0px) ), 20px) 
             rotate(-180deg) rotateX(var(--rotX)) rotateY(var(--rotY)) rotateZ(var(--rotZ));
-        width: 10%;
-        height: 10%;
+        width: 20%;
+        height: 20%;
         clip-path: url(#triangle);
         background-color: $main-color-secondary;
-        transition: transform .4s ease-out, border-bottom .2s, border-top .2s;
+        transition: transform .4s ease-out, border-bottom .35s, border-top .35s;
         border-bottom: 0px solid #fff;
         border-top: 0px solid #fff;
         &.wink{
-            border-bottom: 50px solid #fff;
-            border-top: 50px solid #fff;
+            border-bottom: 9vmin solid #fff;
+            border-top: 9vmin solid #fff;
         }
     }
 }
@@ -126,5 +129,7 @@ onMounted(()=>{
     height: 100%;
     align-items: center;
     justify-content: center;
+    transform-style: preserve-3d;
+    perspective: 2000px;
 }
 </style>
