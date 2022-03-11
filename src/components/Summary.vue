@@ -6,12 +6,12 @@ import ScrollDetect from './ScrollDetect.vue';
 </script>
 <template>
     <div class="transitionAnimation">
-        <TextFlashMarquee flashText="Summary"></TextFlashMarquee>
+        <TextFlashMarquee flashText="About me "></TextFlashMarquee>
     </div>
     <ScrollDetect customId="summaryDetect">
         <section id="summary" class="fullScreen">
             <div class="container">
-                <h1>Summary</h1>
+                <h1>About me</h1>
                 <p>
                     喜歡透過各種方式來尋找能達成目標且一石二鳥的解決辦法，文章、實作經驗、談話中找出有價值的資訊，幫助我用更多角度去挖掘問題本質。
                     在大學裡累積了很多數位內容的實作經驗，培養了對開發的興趣，透過Vue框架幫家人的工作坊做出有RWD的主視覺介紹網頁；
