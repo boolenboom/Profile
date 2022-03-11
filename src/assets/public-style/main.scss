@@ -16,7 +16,7 @@ section{
 .container{
     margin: auto;
     @include phone-width{
-        width: 360px;
+        width: 98vw;
     }
     @include pad-width{
         width: 540px;

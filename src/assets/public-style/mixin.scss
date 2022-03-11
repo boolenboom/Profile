@@ -1,18 +1,19 @@
 $pc-media: 1140px;
-$pad-media: 361px;
-$phone-media: 360px;
-@mixin pc-width {
-    @media (min-width: $pc-media) {
+$pad-media: 1139px;
+$phone-media: 576px;
+
+@mixin phone-width {
+    @media (max-width: $phone-media) {
         @content;
     }
 }
 @mixin pad-width {
-    @media (min-width: $pad-media) {
+    @media (max-width: $pad-media) and (min-width: $phone-media) {
         @content;
     }
 }
-@mixin phone-width {
-    @media (max-width: $phone-media) {
+@mixin pc-width {
+    @media (min-width: $pc-media) {
         @content;
     }
 }
