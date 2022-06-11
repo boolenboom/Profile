@@ -21,53 +21,54 @@ const props = defineProps({
 let { aniText,textAmount } = toRefs( props );
 
 onMounted(()=>{
+    let transformList = Array(textAmount.value);
+    transformList.fill(0);
+    transformList = transformList.map(( val, index )=>{
+        return gsap.utils.interpolate(0, 70, 1 - Math.pow(+((index / textAmount.value) - 1), 4))
+    })
     let timeline = gsap.timeline();
-    timeline.to( '.blackHole-animation-stage .blackHole-text', {
+    let dom_blackHoleText = document.querySelector('.blackHole-text');
+    timeline.to( '.blackHole-text', {
         startAt: {
             opacity: 0,
+            scaleX: window.innerWidth / dom_blackHoleText.clientWidth,
+            x: '-50%',
+            left: '50vw',
             y: function ( index ) {
-                return gsap.utils.interpolate(0, 200, 1 - Math.pow(+((index / textAmount.value) - 1), 4)) + '%';
-            },
-            zIndex: function( index ) {
-                return 100 - index;
+                return transformList[index] + 'vh';
             },
             clipPath: function( index ){
-                let offset = gsap.utils.interpolate(0, 100, 1 - Math.pow(+((index / textAmount.value) - 1), 8));
-                return `polygon(0 ${offset}%, 100% ${offset}%, 100% 100%, 0 100%)`;
-            }
+                let offset = index ? 30 - (transformList[index] - transformList[index - 1]) + 1 : 0;
+                return `polygon(0 ${offset}vh, 100% ${offset}vh, 100% 102%, 0 102%)`;
+            },
         },
-        duration:0.1
+        duration: 0.1
     })
-    .to( '.blackHole-animation-stage .blackHole-text',{
+    .to( '.blackHole-text',{
         opacity:1,
         ease: 'steps(1)',
         stagger:0.2,
-        duration: 2
+        duration: 1.5
     })
-    .to( '.blackHole-animation-stage .blackHole-text',{
+    .to('.blackHole-text', {
         clipPath: 'none',
-        transformOrigin: '150% 50%',
-        x: '-100%',
-        y: '50%',
-        z: -1800,
-        rotationY: 60,
-        rotation: function(index){
-            return index * -(360 / textAmount.value);
-        },
-        duration:1,
-        ease: 'expo'
+        stagger: 0.2,
+        duration: 1,
     })
-    .to( '.blackHole-animation-stage .blackHole-text',{
-        z: -600,
-        duration:1,
-    });
+    .to( '.blackHole-text',{
+        opacity: 0,
+        ease: 'steps(1)',
+        stagger: 0.2,
+        duration: 1,
+    }, '-=4.1');
 
     ScrollTrigger.create({
         animation: timeline,
-        trigger: '.blackHole-animation-stage',
+        trigger: '.transitionAnimation.summary2portfolio .pin',
         start: 'top top',
-        end: '+=1000',
-        scrub: 2,
+        endTrigger: '#works',
+        end: 'top top',
+        scrub: 1,
         pin: true,
     })
 })
@@ -81,18 +82,24 @@ onMounted(()=>{
 .blackHole-animation-stage{
     overflow: hidden;
     position: relative;
+    z-index: 2;
+    pointer-events: none;
     height: 100vh;
+    width: 100%;
+
     transform-style: preserve-3d;
-    perspective: 50px;
-    perspective-origin: 50% 50%;
+    perspective: 20px;
+    perspective-origin: center center;
     .blackHole-text{
         position: absolute;
         top: 0;
         z-index: 10;
-        font-size: 50vmin;
+        letter-spacing: 16px;
+        font-size: 40vh;
         line-height: .75;
         word-break: break-all;
         white-space: nowrap;
+        color: $main-color;
     }
     clip-path: none;
 }
