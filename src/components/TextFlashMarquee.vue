@@ -23,15 +23,19 @@ let repeat = ref(4);
 watch(flashText, (newString) => {
     repeat.value = Math.floor(28 / newString.length);
 });
-function randomPos(){
-    return gsap.utils.random(-200, -800);
+function randomPos(min, max){
+    let randomSum = 0;
+    for (let index = 0; index < 4; index++) {
+        randomSum += Math.round(Math.random() * max / 4);
+    }
+    return min + randomSum;
 }
 
 onMounted(()=>{
     let timeline = gsap.timeline();
     timeline.to('.text-column', { 
         xPercent: function(index){
-            return index % 2 ? gsap.utils.random(-10,-20) : gsap.utils.random(10,40);
+            return index % 2 ? randomPos(-10, -20) : randomPos(10, 40);
         },
         duration: 5 })
         .to('.text-column span', {
@@ -52,10 +56,10 @@ onMounted(()=>{
 
     ScrollTrigger.create({
         animation: timeline,
-        trigger: '.animation-stage',
+        trigger: '.transitionAnimation.hero2summary .pin',
         start: 'top top',
-        end: '+=800',
-        scrub: 3,
+        end: '+=90%',
+        scrub: 1,
         pin: true,
     });
 })
@@ -63,7 +67,7 @@ onMounted(()=>{
 </script>
 <template>
     <div class="animation-stage" :style="`--col:${col};`">
-        <div v-for="i of col" class="text-column" :class="`id${i}`" :style="`--start-pos:${randomPos()}px;`">
+        <div v-for="i of col" class="text-column" :class="`id${i}`" :style="`--start-pos:${randomPos(-200, -600)}px;`">
             <span v-for="i of repeat">{{ flashText }}</span>
         </div>
     </div>
