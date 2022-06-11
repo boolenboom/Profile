@@ -1,6 +1,9 @@
 <script setup>
 import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // * 物體 transform 資料
 let rotX = ref(0), rotY = ref(0), rotZ = ref(0);
@@ -46,6 +49,7 @@ let idleDelay = 0;
 onMounted(()=>{
     window.addEventListener('pointerdown', eyeTrack);
     window.addEventListener('pointermove', eyeTrack);
+    window.scrollTo({top:0,left:0,behavior:'smooth'});
 })
 onUnmounted(()=>{
     window.removeEventListener('pointerdown', eyeTrack);
@@ -68,6 +72,89 @@ onMounted(()=>{
 })
 // *
 
+onMounted(()=>{
+    gsap.to('.sphere.master',{
+        onStart:function(){
+            window.removeEventListener('pointerdown', eyeTrack);//看有沒有效能議題
+            window.removeEventListener('pointermove', eyeTrack);
+            window.requestAnimationFrame(()=>{
+                clearTimeout( idleDelay );
+                [rotX.value, rotY.value, rotZ.value, posX.value, posY.value] = [ 10, 0, 0, 0, 24 ];
+            });
+        },
+        onReverseComplete:function(){
+            window.addEventListener('pointerdown', eyeTrack);
+            window.addEventListener('pointermove', eyeTrack);
+            eyeInit();
+        },
+        y: '-100vh',
+        scrollTrigger:{
+            trigger: '#hero',
+            start: 'top -20%',
+            endTrigger: '.transitionAnimation.hero2summary',
+            end: 'top top',
+            scrub: true,
+        },
+        duration: 1
+    });
+    
+    let summary = gsap.timeline()
+    .to('.sphere.summary2works',{
+        startAt:{
+            x:'100vw'
+        },
+        keyframes:[{
+            x: '20vw',
+            duration: 0.8,
+        },{
+            y: '100vh',
+            duration: 0.3,
+            delay: 0.3
+        },{
+            x: 0,
+            duration: 0.1,
+            delay: 0.1,
+            ease: 'step(1)'
+        }],
+        scrollTrigger:{
+            trigger:'.transitionAnimation.hero2summary',
+            start:'top top',
+            endTrigger: '#summary',
+            end:'top -30%',
+            scrub:true
+        }
+    });
+
+    let summary2works = gsap.timeline()
+    .to('.sphere.summary2works',{
+        y: 0,
+        scale: 10,
+        duration: 0.5,
+        delay: 0.3
+    })
+    .to('.sphere.summary2works', {
+        scale: 14,
+        duration: 1
+    })
+    .to('.sphere.summary2works', {
+        y: '-100vh',
+        ease: 'expo',
+        duration: 0.3
+    });
+
+    ScrollTrigger.create({
+        animation:summary2works,
+        trigger:'#summary',
+        start:'top -50%',
+        endTrigger: '#works',
+        end: 'top top',
+        scrub:true
+    });
+
+    window.addEventListener('resize',()=>{
+        ScrollTrigger.refresh();
+    })
+})
 </script>
 <template>
     <svg class="dis-hidden">
@@ -84,27 +171,42 @@ onMounted(()=>{
     </svg>
     <div class="fixedBackground pos-fixed fullScreen">
         <div class="stage dis-flex">
-            <div class="sphere" :style="computedTransform">
+            <div class="sphere master" :style="computedTransform">
                 <div class="eye" :class="{'wink':winkTiming}" @transitionend="winkTimer"></div>
+            </div>
+            <div class="sphere summary2works">
+                <div class="headSticker">
+                    <div class="tri"></div>
+                </div>
+                <div class="hole"></div>
             </div>
         </div>
     </div>
 </template>
 <style lang="scss">
+
+
 .fixedBackground {
     z-index: 0;
     background-color: $main-color;
+    overflow: hidden;
 }
 .sphere {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 90vmin;
     height: 90vmin;
     border-radius: 50%;
     background-color: #fff;
-    transform: translate3d( 0, 0, 20px ) rotateX(calc( -1 * var(--rotX))) rotateY(calc( -1 * var(--rotY)));
     transition: transform .4s ease-out;
     transform-style: preserve-3d;
     perspective: 100px;
+    perspective-origin: 50% 50%;
+}
+.master{
+    transform: translate3d(-50%, -50%, 20px) rotateX(calc( -1 * var(--rotX))) rotateY(calc( -1 * var(--rotY)));
     .eye{
         position: absolute;
         top: 50%;
@@ -124,12 +226,43 @@ onMounted(()=>{
         }
     }
 }
+.summary2works{
+    width: 75vmin;
+    height: 75vmin;
+    perspective: 1000px;
+    > *{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%, -50% ) translate3d( 0, 0, 100px);
+    }
+    .headSticker{
+        width: 50%;
+        height: 50%;
+        z-index: 2;
+        overflow: hidden;
+    }
+    .tri{
+        clip-path: url(#triangle);
+        width: 30%;
+        height: 30%;
+        background-color: #fff;
+    }
+    .hole{
+        transform: translateX(-50%);
+        border-radius: 50%;
+        width: 50%;
+        height: 50%;
+        z-index: 1;
+        background-color: $main-color-secondary;
+    }
+}
 .stage {
     width: 100%;
     height: 100%;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     transform-style: preserve-3d;
     perspective: 2000px;
+    perspective-origin: center center;
 }
 </style>
