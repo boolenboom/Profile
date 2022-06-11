@@ -1,5 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+
+// * 外部參數
 const props = defineProps({
     contentAmount:{
         type:Number,
@@ -93,6 +95,11 @@ function visibleChange(eventInfo){
     </div>
 </template>
 <style lang="scss">
+
+
+
+
+
 .radial-slider-wrapper{
     position: relative;
 }
@@ -105,21 +112,21 @@ function visibleChange(eventInfo){
         height: 100vh;
         opacity: 0;
         pointer-events: none;
-        filter: grayscale(10%);
-        background-image: var(--imageUrl) ;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
         .filter-color{
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient($main-color 2.5%, rgba($color: $main-color, $alpha: .8), $main-color 95%);
             z-index: -1;
         }
         .wrapper{
             transition: all .4s ease-out;
             color: $text-color;
+        }
+        &:nth-child(even){
+            background-color: #fff;
+        }
+        &:nth-child(odd){
+            background-color: $main-color-secondary;
         }
     }
     > li.visible{
@@ -135,16 +142,13 @@ function visibleChange(eventInfo){
     }
     > li.is-animating{
         z-index: 2;
-        transition: clip-path .4s ease-in, transform .4s;
     }
     > li.prev-slide,
     > li.next-slide{
         cursor: pointer;
+        transition: clip-path .4s ease-in, transform .4s ease-in;
         animation: clicked .2s;
         z-index: 3;
-    }
-    > li.static{
-        transition: clip-path .4s;
     }
     > li.static:hover{
         --progress-percent: 35%;
@@ -157,7 +161,6 @@ function visibleChange(eventInfo){
         }
         .wrapper{
             transform: translateX( calc( var(--slide-way,0) * 20% ) );
-            opacity: 0;
         }
     }
     > li.scale-down{
@@ -171,6 +174,9 @@ function visibleChange(eventInfo){
             clip-path: circle( var(--progress-percent, 20%) at 90% 80%);
             transform-origin: 100% 80%;
         }
+        .wrapper{
+            transform: translateX( 50vh );
+        }
     }
     > li.prev-slide{
         clip-path: circle( var(--progress-percent, 5%) at 7.86% 50%);
@@ -178,6 +184,9 @@ function visibleChange(eventInfo){
         @media (max-aspect-ratio: 1/1) {
             clip-path: circle( var(--progress-percent, 20%) at 10% 80%);
             transform-origin: 0% 80%;
+        }
+        .wrapper {
+            transform: translateX(-50vh);
         }
     }
 }
@@ -188,5 +197,12 @@ function visibleChange(eventInfo){
     to{
         transform: scale(1);
     }
+}
+
+.initial li.visible .wrapper{
+    transform: translateY(300px);
+}
+.initial li.next-slide,.initial li.prev-slide{
+    transform: translateY(300px);
 }
 </style>

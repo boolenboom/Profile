@@ -2,55 +2,58 @@
 import { onMounted, ref, toRefs } from 'vue';
 
 const props = defineProps({
-    customId: {
-        type: String,
+    startPoint:{
+        type: Number,
+        default:0
+    },
+    endPoint:{
+        type: Number
     }
 });
-const { customId } = toRefs(props);
+const { startPoint, endPoint } = toRefs(props);
 
-let isEnter = ref('initial');
-function scrollHandler( DetectDom ) {
-    const enterPoint = DetectDom.offsetTop + DetectDom.clientHeight/2;
-    const leavePoint = enterPoint + 350;
+let state = ref('initial');
+let scopeProgress = ref(0);
+function scrollHandler() {
     return ()=>{
-        console.log(enterPoint, leavePoint);
         window.requestAnimationFrame(() => {
-            if( window.scrollY > enterPoint && window.scrollY < leavePoint ){
-                isEnter.value = 'enter';
+            let enterPoint = startPoint.value;
+            let leavePoint = endPoint.value;
+            if( leavePoint == undefined ){
+                state.value = window.scrollY > enterPoint ? 'pass' : 'initial';
             }
-            else if(window.scrollY > leavePoint){
-                isEnter.value = 'leave';
-            }
-            else{
-                isEnter.value = 'initial';
+            else if( leavePoint != undefined ){
+                if( window.scrollY > enterPoint && window.scrollY < leavePoint ){
+                    scopeProgress.value = (window.scrollY - enterPoint) / (leavePoint - enterPoint);
+                    state.value = 'enter';
+                }
+                else if( window.scrollY > leavePoint ){
+                    scopeProgress.value = 1;
+                    state.value = 'pass';
+                }
+                else{
+                    scopeProgress.value = 0;
+                    state.value = 'initial';
+                }
             }
         })
     };
 }
 
 onMounted(() => {
-    let dom = {};
-    if( document.querySelector(`#${customId.value}`).parentElement == document.querySelector('#app') ){
-        dom = document.querySelector(`#${customId.value}`);
-    }
-    else{
-        dom = document.querySelector(`#${customId.value}`).parentElement;
-    }
-    console.log(dom);
-
-    window.addEventListener( 'scroll', scrollHandler( dom ) );
+    window.addEventListener( 'scroll', scrollHandler() );
 });
 
 </script>
 <template>
-    <div class="scrollDetect" :id="customId" :class="isEnter">
+    <div class="scrollDetect" :class="state" :style="`--scope-progress:${scopeProgress};`">
         <slot></slot>
     </div>
 </template>
 <style lang="scss">
 .scrollDetect{
     > *{
-        transition: all 1s ease-in;
+        transition: all .2s ease-out;
     }
 }
 </style>
