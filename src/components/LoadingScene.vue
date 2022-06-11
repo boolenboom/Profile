@@ -1,5 +1,6 @@
 <script setup>
 import { ref, toRefs } from 'vue';
+// import StarrySky from './StarrySky.vue';
 
 const props = defineProps({
     isLoadComplete:{
@@ -30,7 +31,8 @@ setTimeout( CheckLoadStatus, 5000 );
 </script>
 <template>
 <div class="pos-fixed fullScreen zIndex-L1 bg-halfBlue" :class="{'dis-none':isLoadedToHidden}">
-    <h1 class="pos-center">Loading...</h1>
+    <!-- <StarrySky></StarrySky> -->
+    Loading...
 </div>
 </template>
 <style lang="scss">
