@@ -11,6 +11,18 @@ a{
 section{
     padding: 200px 0;
     z-index: 1;
+    position: relative;
+}
+img{
+    width: 100%;
+    height: auto;
+}
+
+h1{
+    font-size: 4rem;
+}
+p{
+    font-size: 1rem;
 }
 
 .container{
