@@ -80,30 +80,31 @@ function visibleChange(eventInfo){
 <template>
     <div class="radial-slider-wrapper">
         <ul class="radial-slider" :style="`--slide-way:${slideWay}`">
-            <li v-for="i of contentAmount" 
-                class="dis-flex center" 
-                :class="statusList[i - 1]" 
-                :style="`--imageUrl:url(${imageList[i - 1]});`"
-                @click.prevent = "slideTo( i - 1 )"
-                @transitionend = "visibleChange">
-                <div class="filter-color"></div>
+            <li v-for="i of contentAmount" class="dis-flex center" :class="statusList[i - 1]"
+                :style="`--imageUrl:url(${imageList[i - 1]});`" @click.prevent="slideTo( i - 1 )"
+                @transitionend="visibleChange">
                 <div class="wrapper">
-                    <slot :name="`slide${i}`"></slot>
+                    <slot :name="`slide${i}`">
+                    </slot>
                 </div>
+                <span class="indicator text-large">
+                    <span class="indicator-name">
+                        <slot :name="`title${i}`"></slot>
+                    </span>
+                    <span class="left">&laquo;</span>
+                    <span class="right">&raquo;</span>
+                </span>
             </li>
         </ul>
     </div>
 </template>
 <style lang="scss">
-
-
-
-
-
 .radial-slider-wrapper{
     position: relative;
+    overflow: hidden;
 }
 .radial-slider{
+    transition: transform 0.2s;
     > li{
         position: absolute;
         top: 0;
@@ -112,11 +113,29 @@ function visibleChange(eventInfo){
         height: 100vh;
         opacity: 0;
         pointer-events: none;
-        .filter-color{
+        .indicator{
             position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            width: 100vw;
+            height: 100vh;
+            .indicator-name{
+                position: absolute;
+                height: fit-content;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+        }
+        .left,.right{
+            font-weight: bold;
+            position: absolute;
+            height: fit-content;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            @include phone-width{
+                top: unset;
+                bottom: 18vh;
+            }
         }
         .wrapper{
             transition: all .4s ease-out;
@@ -133,6 +152,10 @@ function visibleChange(eventInfo){
         position: relative;
         opacity: 1;
         pointer-events: all;
+        transition: border-radius 0.2s;
+        .indicator{
+            display: none;
+        }
     }
     > li.is-animating,
     > li.prev-slide,
@@ -149,6 +172,9 @@ function visibleChange(eventInfo){
         transition: clip-path .4s ease-in, transform .4s ease-in;
         animation: clicked .2s;
         z-index: 3;
+        .wrapper{
+            opacity: 0;
+        }
     }
     > li.static:hover{
         --progress-percent: 35%;
@@ -156,7 +182,7 @@ function visibleChange(eventInfo){
     > li.move-up{
         /* class added to the navigation round element when clicked - used to create the click effect */
         --progress-percent: 120%;
-        @media (max-aspect-ratio: 1/1) {
+        @include phone-width{
             --progress-percent: 140%;
         }
         .wrapper{
@@ -170,23 +196,37 @@ function visibleChange(eventInfo){
     > li.next-slide{
         clip-path: circle( var(--progress-percent, 5%) at 92.14% 50%);
         transform-origin: 92.14% 50%;
-        @media (max-aspect-ratio: 1/1) {
-            clip-path: circle( var(--progress-percent, 20%) at 90% 80%);
+        @include phone-width{
+            clip-path: circle( var(--progress-percent, 10%) at 100% 80%);
             transform-origin: 100% 80%;
         }
-        .wrapper{
-            transform: translateX( 50vh );
+        .indicator-name{
+            right: 11.8vw;
+        }
+        .left{
+            display: none;
+        }
+        .right{
+            right: 7.86vw;
+            transform: translateX(45%);
         }
     }
     > li.prev-slide{
         clip-path: circle( var(--progress-percent, 5%) at 7.86% 50%);
         transform-origin: 7.86% 50%;
-        @media (max-aspect-ratio: 1/1) {
-            clip-path: circle( var(--progress-percent, 20%) at 10% 80%);
+        @include phone-width{
+            clip-path: circle( var(--progress-percent, 10%) at 0% 80%);
             transform-origin: 0% 80%;
         }
-        .wrapper {
-            transform: translateX(-50vh);
+        .indicator-name{
+            left: 11.8vw;
+        }
+        .right{
+            display: none;
+        }
+        .left{
+            left: 7.86vw;
+            transform: translateX(-45%);
         }
     }
 }
@@ -204,5 +244,12 @@ function visibleChange(eventInfo){
 }
 .initial li.next-slide,.initial li.prev-slide{
     transform: translateY(300px);
+}
+.initial li.visible{
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.initial .radial-slider{
+    transform: translateY(100vh);
 }
 </style>
