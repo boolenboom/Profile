@@ -61,6 +61,8 @@ function isRun(id){
     </div>
 </template>
 <style lang="scss">
+
+
 .fliper{
     position: relative;
     overflow-y: hidden;
@@ -72,6 +74,9 @@ function isRun(id){
         top: 0;
         width: fit-content;
         transform: translateY( 100% );
+        @include phone-width{
+            transform: translateX(100%);
+        }
     }
     .hidden{
         opacity: 0;
@@ -82,6 +87,9 @@ function isRun(id){
             var( --duration, 0s )  
             var( --delay, 0s ) 
             1;
+        @include phone-width{
+            animation-name: flipLeft;
+        }
     }
     @keyframes flipUp {
         0%{
@@ -95,6 +103,23 @@ function isRun(id){
         }
         100%{
             transform: translateY( -100% );
+        }
+    }
+    @keyframes flipLeft {
+        0% {
+            transform: translateX(100%);
+        }
+        
+        10% {
+            transform: translateX(0%);
+        }
+        
+        90% {
+            transform: translateX(0%);
+        }
+        
+        100% {
+            transform: translateX(-100%);
         }
     }
 }
