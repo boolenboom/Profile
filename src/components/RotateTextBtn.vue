@@ -12,32 +12,33 @@ const props = defineProps({
 })
 </script>
 <template>
-    <a :href="url" class="rotate-Btn">
+    <span :href="url" class="rotate-effect">
         <svg viewBox="0 0 84 84">
             <defs>
                 <path id="pathCircle" stroke="#fff" fill="none" d="M42 0a42 42 0 0 1 0 84a42 42 0 0 1 0 -84z">
                 </path>
             </defs>
             <text>
-                <textPath href="#pathCircle">{{BtnText}}</textPath>
+                <textPath href="#pathCircle">
+                    <slot></slot>
+                </textPath>
             </text>
         </svg>
-    </a>
+    </span>
 </template>
 <style lang="scss">
-
-.rotate-Btn {
-    --fz: 24px;
-    --btn-radius: 84px;
-    @include phone-width{
-        --fz: 24px;
-        --btn-radius: 42px;
-    }
-    font-size: var(--fz);
+.rotate-effect {
     display: block;
-    inline-size: var(--btn-radius);
-    block-size: var(--btn-radius);
-    line-height: var(--btn-radius);
+    font-size: var(--fz,24px);
+    inline-size: var(--btn-radius,84px);
+    block-size: var(--btn-radius,84px);
+    line-height: var(--btn-radius,84px);
+    @include phone-width{
+        font-size: var(--fz,16px);
+        inline-size: var(--btn-radius,42px);
+        block-size: var(--btn-radius,42px);
+        line-height: var(--btn-radius,42px);
+    }
     will-change: transform;
     animation: touchRotate 8s linear infinite paused forwards;
     @include phone-width{

@@ -32,8 +32,9 @@ onMounted(()=>{
                             <p class="text-small">使用公共運輸整合資訊流通服務平台(Public Transport data eXchange
                                 ,PTX)的資料，從串接到處理資料的過程寫成小套件提高程式碼複用性，且可以在不同專案使用。
                                 能使用搜尋的方式尋找到想要的資訊。</p>
-                            <RotateTextBtn url="#123" BtnText="go to Travel Taiwan..." class="toBottom">
-                            </RotateTextBtn>
+                            <a href="#123" class="toBottom">
+                                <RotateTextBtn>go to Travel Taiwan...</RotateTextBtn>
+                            </a>
                         </article>
                     </template>
                     <template #title2>CSS Rush</template>
@@ -43,6 +44,9 @@ onMounted(()=>{
                             <h2 class="text-large">CSS Rush</h2>
                             <p class="text-small">pet-landing - 切版到完成耗時14小時，使用CSS偽類、Input tag、label tag
                                 製作簡易輪播功能，並包含RWD。</p>
+                            <a href="#456" class="toBottom">
+                                <RotateTextBtn>go to CSS Rush...</RotateTextBtn>
+                            </a>
                             <RotateTextBtn url="#456" BtnText="go to CSS Rush..." class="toBottom">
                             </RotateTextBtn>
                         </article>
@@ -54,8 +58,9 @@ onMounted(()=>{
                             <h2 class="text-large">Lee's profile</h2>
                             <p class="text-small">使用GSAP、THREEJS創建豐富特效的個人網站，自行設計網站的布局和動畫，
                                 把個人特質和對世界的想法融入網站樣貌。</p>
-                            <RotateTextBtn url="#789" BtnText="go to Lee's profile..." class="toBottom">
-                            </RotateTextBtn>
+                            <a href="#789" class="toBottom">
+                                <RotateTextBtn>go to Lee's profile...</RotateTextBtn>
+                            </a>
                         </article>
                     </template>
                     <template #title4>Github Repos</template>
@@ -66,8 +71,9 @@ onMounted(()=>{
                             <p class="text-small">參考GitHub RESTful API 官方函式庫(Octokit)的使用方式，在自行編寫的套件上擴充方法，
                                 讓取得資料的過程簡化。可以快速地看到GitHub的使用者清單，
                                 以及使用者的Public Repos，並透過Router快速搜尋到特定資訊。</p>
-                            <RotateTextBtn url="#010" BtnText="go to Github Repos..." class="toBottom">
-                            </RotateTextBtn>
+                            <a href="#012" class="toBottom">
+                                <RotateTextBtn>go to Github Repos...</RotateTextBtn>
+                            </a>
                         </article>
                     </template>
                 </RadialSlider>
