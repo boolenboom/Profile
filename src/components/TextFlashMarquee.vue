@@ -35,9 +35,10 @@ onMounted(()=>{
     let timeline = gsap.timeline();
     timeline.to('.text-column', { 
         xPercent: function(index){
-            return index % 2 ? randomPos(-10, -20) : randomPos(10, 40);
+            return index % 2 ? randomPos(-80, -120) : randomPos(60, 80);
         },
-        duration: 5 })
+        duration: 5,
+        ease:'linear' })
         .to('.text-column span', {
             startAt: { opacity: 0 },
             keyframes: {
@@ -50,8 +51,8 @@ onMounted(()=>{
                 "100%": { opacity: 0 },
             },
             ease: "none",
-            duration: 4,
-            delay: 'random( 0,1 )'
+            duration: 5,
+            delay: 'random( 0,0.5 )'
         }, '-=5');
 
     ScrollTrigger.create({
@@ -67,12 +68,13 @@ onMounted(()=>{
 </script>
 <template>
     <div class="animation-stage" :style="`--col:${col};`">
-        <div v-for="i of col" class="text-column" :class="`id${i}`" :style="`--start-pos:${randomPos(-200, -600)}px;`">
+        <div v-for="i of col" class="text-column" :class="`id${i}`"
+            :style="`--start-pos:${i % 2 ? randomPos(-1800, -2400) : randomPos(-200, -600)}px;`">
             <span v-for="i of repeat">{{ flashText }}</span>
         </div>
     </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .animation-stage {
     overflow: hidden;
 }
@@ -86,6 +88,9 @@ onMounted(()=>{
         line-height: 0.75;
         color: transparent;
         -webkit-text-stroke: 4px $text-color;
+    }
+    span~span{
+        margin-inline-start: 4rem;
     }
 }
 </style>
