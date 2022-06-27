@@ -177,7 +177,7 @@ function visibleChange(eventInfo){
         }
     }
     > li.static:hover{
-        --progress-percent: 35%;
+        --progress-percent: 50%;
     }
     > li.move-up{
         /* class added to the navigation round element when clicked - used to create the click effect */
@@ -201,7 +201,7 @@ function visibleChange(eventInfo){
             transform-origin: 100% 80%;
         }
         .indicator-name{
-            right: 11.8vw;
+            right: 13vw;
         }
         .left{
             display: none;
@@ -219,7 +219,7 @@ function visibleChange(eventInfo){
             transform-origin: 0% 80%;
         }
         .indicator-name{
-            left: 11.8vw;
+            left: 13vw;
         }
         .right{
             display: none;
