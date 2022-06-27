@@ -86,14 +86,20 @@ p{
         --text-size-ratio: 0.75;
     }
 }
+.text-align-start{
+    text-align: start;
+}
+.text-align-end{
+    text-align: end;
+}
 .container{
     margin: auto;
     width: 98vw;
     @include pc-width{
-        width: 1140px;
+        width: calc(1120px / 2 + 50vw);
     }
     @include pad-width{
-        width: 540px;
+        width: calc(520px / 2 + 50vw)
     }
 }
 .wrapper{
