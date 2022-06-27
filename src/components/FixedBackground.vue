@@ -104,12 +104,12 @@ onMounted(()=>{
             x:'100vw'
         },
         keyframes:[{
-            x: '20vw',
-            duration: 0.8,
+            x: '-10vw',
+            duration: 8,
         },{
             y: '100vh',
-            duration: 0.3,
-            delay: 0.3
+            duration: 3,
+            delay: 5
         },{
             x: 0,
             duration: 0.1,
@@ -229,7 +229,10 @@ onMounted(()=>{
 .summary2works{
     width: 75vmin;
     height: 75vmin;
-    perspective: 1000px;
+    @include pad-width{
+        width: 50vmin;
+        height: 50vmin;
+    }
     > *{
         position: absolute;
         top: 50%;
