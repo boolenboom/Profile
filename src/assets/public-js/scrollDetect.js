@@ -17,7 +17,7 @@ export default function scrollDetect(startPoint = 0, endPoint){
                 }
                 else if(eP != undefined){
                     let current = (window.scrollY - sP) / (eP - sP);
-                    current = Math.min(1, Math.max(0, current));
+                    current = Math.round(Math.min(1, Math.max(0, current)) * 1000) / 1000 ;
                     self.progress.value = current;
                     self.status.value = current > 0 ? (current >= 1 ? 'pass' : 'enter') : 'initial'
                 }
