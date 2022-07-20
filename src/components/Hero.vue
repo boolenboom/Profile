@@ -22,10 +22,6 @@ import TextFliper from './TextFliper.vue';
     </section>
 </template>
 <style lang="scss">
-
-
-
-
 #hero{
     height: 100vh;
     pointer-events: none;
