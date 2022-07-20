@@ -34,10 +34,10 @@ const props = defineProps({
     block-size: var(--btn-radius,84px);
     line-height: var(--btn-radius,84px);
     @include phone-width{
-        font-size: var(--fz,16px);
-        inline-size: var(--btn-radius,42px);
-        block-size: var(--btn-radius,42px);
-        line-height: var(--btn-radius,42px);
+        font-size: var(--fz,24px);
+        inline-size: var(--btn-radius,63px);
+        block-size: var(--btn-radius,63px);
+        line-height: var(--btn-radius,63px);
     }
     will-change: transform;
     animation: touchRotate 8s linear infinite paused forwards;

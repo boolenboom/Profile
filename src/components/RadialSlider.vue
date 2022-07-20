@@ -99,6 +99,8 @@ function visibleChange(eventInfo){
     </div>
 </template>
 <style lang="scss">
+
+
 .radial-slider-wrapper{
     position: relative;
     overflow: hidden;
@@ -134,7 +136,7 @@ function visibleChange(eventInfo){
             margin: auto;
             @include phone-width{
                 top: unset;
-                bottom: 18vh;
+                bottom: 2vh;
             }
         }
         .wrapper{
@@ -197,8 +199,8 @@ function visibleChange(eventInfo){
         clip-path: circle( var(--progress-percent, 5%) at 92.14% 50%);
         transform-origin: 92.14% 50%;
         @include phone-width{
-            clip-path: circle( var(--progress-percent, 10%) at 100% 80%);
-            transform-origin: 100% 80%;
+            clip-path: circle( var(--progress-percent, 20%) at 100% 95%);
+            transform-origin: 100% 100%;
         }
         .indicator-name{
             right: 13vw;
@@ -215,8 +217,8 @@ function visibleChange(eventInfo){
         clip-path: circle( var(--progress-percent, 5%) at 7.86% 50%);
         transform-origin: 7.86% 50%;
         @include phone-width{
-            clip-path: circle( var(--progress-percent, 10%) at 0% 80%);
-            transform-origin: 0% 80%;
+            clip-path: circle( var(--progress-percent, 20%) at 0% 95%);
+            transform-origin: 0% 100%;
         }
         .indicator-name{
             left: 13vw;

@@ -6,7 +6,7 @@ import { onMounted, ref } from 'vue';
 
 let start = ref(0);
 function initial(){
-    let dom = document.getElementById('works');
+    let dom = document.getElementById('portfolio');
     start.value = dom.parentElement.clientHeight + dom.parentElement.offsetTop - dom.clientHeight - 1;
     console.log('portfolio: ' + start.value, dom.clientHeight );
 }
@@ -17,8 +17,7 @@ onMounted(()=>{
 })
 </script>
 <template>
-    <div class="portfolio">
-        <div id="works">
+    <div id="portfolio">
             <ScrollDetect :startPoint='start'>
                 <RadialSlider :imageList="['https://picsum.photos/id/69/1400/800',
                                 'https://picsum.photos/id/666/1400/800',
@@ -32,7 +31,7 @@ onMounted(()=>{
                             <p class="text-small">使用公共運輸整合資訊流通服務平台(Public Transport data eXchange
                                 ,PTX)的資料，從串接到處理資料的過程寫成小套件提高程式碼複用性，且可以在不同專案使用。
                                 能使用搜尋的方式尋找到想要的資訊。</p>
-                            <a href="#123" class="toBottom">
+                            <a href="#123" class="jump-url">
                                 <RotateTextBtn>go to Travel Taiwan...</RotateTextBtn>
                             </a>
                         </article>
@@ -44,11 +43,9 @@ onMounted(()=>{
                             <h2 class="text-large">CSS Rush</h2>
                             <p class="text-small">pet-landing - 切版到完成耗時14小時，使用CSS偽類、Input tag、label tag
                                 製作簡易輪播功能，並包含RWD。</p>
-                            <a href="#456" class="toBottom">
+                            <a href="#456" class="jump-url">
                                 <RotateTextBtn>go to CSS Rush...</RotateTextBtn>
                             </a>
-                            <RotateTextBtn url="#456" BtnText="go to CSS Rush..." class="toBottom">
-                            </RotateTextBtn>
                         </article>
                     </template>
                     <template #title3>Lee's profile</template>
@@ -58,7 +55,7 @@ onMounted(()=>{
                             <h2 class="text-large">Lee's profile</h2>
                             <p class="text-small">使用GSAP、THREEJS創建豐富特效的個人網站，自行設計網站的布局和動畫，
                                 把個人特質和對世界的想法融入網站樣貌。</p>
-                            <a href="#789" class="toBottom">
+                            <a href="#789" class="jump-url">
                                 <RotateTextBtn>go to Lee's profile...</RotateTextBtn>
                             </a>
                         </article>
@@ -71,7 +68,7 @@ onMounted(()=>{
                             <p class="text-small">參考GitHub RESTful API 官方函式庫(Octokit)的使用方式，在自行編寫的套件上擴充方法，
                                 讓取得資料的過程簡化。可以快速地看到GitHub的使用者清單，
                                 以及使用者的Public Repos，並透過Router快速搜尋到特定資訊。</p>
-                            <a href="#012" class="toBottom">
+                            <a href="#012" class="jump-url">
                                 <RotateTextBtn>go to Github Repos...</RotateTextBtn>
                             </a>
                         </article>
@@ -79,20 +76,17 @@ onMounted(()=>{
                 </RadialSlider>
             </ScrollDetect>
         </div>
-    </div>
 </template>
 <style lang="scss" scoped>
 
-.portfolio{
-    position: relative;
-}
-#works{
+#portfolio{
     position: relative;
     bottom: 0;
     width: 100%;
     z-index: 1;
     > *{
         background-color: $main-color-secondary;
+        transition: opacity 0s linear;
     }
 }
 article{
@@ -105,9 +99,9 @@ article{
     height: 60vh;
     @include phone-width{
         grid-template: "head" auto
-                        "img" 3fr
-                        "context" 1fr / auto;
-        gap: 12px;
+                        "img" 2fr
+                        "context" 7fr / auto;
+        gap: 24px;
         height: 80vh;
     }
     h2{
@@ -118,6 +112,9 @@ article{
         text-align: start;
         z-index: 2;
         grid-area: context / context / context / context;
+        @include phone-width{
+            padding-inline-end: 50%;
+        }
     }
     .workImg{
         position: absolute;
@@ -128,26 +125,30 @@ article{
         grid-area: img;
         background-color: $main-color;
     }
-    .toBottom{
+    .jump-url{
         grid-area: img;
         position: absolute;
+        top: 12px;
+        &::after{
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 36px;
+            height: 36px;
+            background-color: #000;
+            clip-path: polygon(0 84%, 16% 100%, 80% 35%, 80% 78%, 100% 60%, 100% 0, 40% 0, 21% 20%, 65% 20%);
+        }
     }
 }
 .initial{
-    animation: delayToHidden 0.3s linear forwards;
+    opacity: 0;
+    transition-delay: 3s !important;
 }
 .pass{
     opacity: 1;
-}
-@keyframes delayToHidden {
-    from{
-        opacity: 1;
-    }
-    99%{
-        opacity: 1;
-    }
-    to{
-        opacity: 0;
-    }
 }
 </style>
