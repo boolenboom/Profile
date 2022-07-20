@@ -17,6 +17,8 @@ let computedTransform = computed(()=>{
 })
 // *
 
+let isIdle = ref(true);
+
 // * 使用者互動行為
 let idleDelay = 0;
 
@@ -40,8 +42,10 @@ let idleDelay = 0;
             clearTimeout( idleDelay );
             idleDelay = setTimeout( eyeInit, 3000);
         })
+        isIdle.value = false;
     }
     function eyeInit(){
+        isIdle.value = true;
         window.requestAnimationFrame(()=>{
             [rotX.value, rotY.value, rotZ.value, posX.value, posY.value] = Array(5).fill(0);
         })
@@ -81,6 +85,7 @@ onMounted(()=>{
                 clearTimeout( idleDelay );
                 [rotX.value, rotY.value, rotZ.value, posX.value, posY.value] = [ 10, 0, 0, 0, 24 ];
             });
+            isIdle.value = true;
         },
         onReverseComplete:function(){
             window.addEventListener('pointerdown', eyeTrack);
@@ -117,10 +122,10 @@ onMounted(()=>{
             ease: 'step(1)'
         }],
         scrollTrigger:{
-            trigger:'.transitionAnimation.hero2summary',
-            start:'top top',
+            trigger:'#summary',
+            start:'bottom bottom',
             endTrigger: '#summary',
-            end:'top -30%',
+            end:'bottom 10%',
             scrub:true
         }
     });
@@ -145,8 +150,8 @@ onMounted(()=>{
     ScrollTrigger.create({
         animation:summary2works,
         trigger:'#summary',
-        start:'top -50%',
-        endTrigger: '#works',
+        start:'bottom 30%',
+        endTrigger: '#portfolio',
         end: 'top top',
         scrub:true
     });
@@ -171,7 +176,7 @@ onMounted(()=>{
     </svg>
     <div class="fixedBackground pos-fixed fullScreen">
         <div class="stage dis-flex">
-            <div class="sphere master" :style="computedTransform">
+            <div class="sphere master" :class="{'idle':isIdle}" :style="computedTransform">
                 <div class="eye" :class="{'wink':winkTiming}" @transitionend="winkTimer"></div>
             </div>
             <div class="sphere summary2works">
@@ -184,8 +189,6 @@ onMounted(()=>{
     </div>
 </template>
 <style lang="scss">
-
-
 .fixedBackground {
     z-index: 0;
     background-color: $main-color;
@@ -196,28 +199,49 @@ onMounted(()=>{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    @include pad-width{
+        transition: transform 0.4s ease;
+    }
+    @include phone-width{
+        transition: transform 0.4s ease;
+    }
     width: 90vmin;
     height: 90vmin;
     border-radius: 50%;
     background-color: #fff;
-    transition: transform .4s ease-out;
     transform-style: preserve-3d;
     perspective: 100px;
     perspective-origin: 50% 50%;
 }
 .master{
     transform: translate3d(-50%, -50%, 20px) rotateX(calc( -1 * var(--rotX))) rotateY(calc( -1 * var(--rotY)));
+    &.idle{
+        transition: transform 0.4s ease;
+        .eye{
+            transition: transform .4s ease, border-bottom .35s, border-top .35s;
+        }
+    }
     .eye{
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate3d(calc( -50% + var(--posX, 0px) ), calc( -50% + var(--posY, 0px) ), 20px) 
             rotate(-180deg) rotateX(var(--rotX)) rotateY(var(--rotY)) rotateZ(var(--rotZ));
+        @include pad-width {
+            transition: transform 0.4s ease,
+                border-bottom .35s,
+                border-top .35s;
+        }
+        @include phone-width{
+            transition: transform 0.4s ease,
+                border-bottom .35s,
+                border-top .35s;
+        }
         width: 20%;
         height: 20%;
         clip-path: url(#triangle);
         background-color: $main-color-secondary;
-        transition: transform .4s ease-out, border-bottom .35s, border-top .35s;
+        transition: border-bottom .35s, border-top .35s;
         border-bottom: 0px solid #fff;
         border-top: 0px solid #fff;
         &.wink{
@@ -227,6 +251,7 @@ onMounted(()=>{
     }
 }
 .summary2works{
+    transition: transform 0.4s ease;
     width: 75vmin;
     height: 75vmin;
     @include pad-width{

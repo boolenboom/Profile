@@ -66,7 +66,7 @@ onMounted(()=>{
         animation: timeline,
         trigger: '.transitionAnimation.summary2portfolio .pin',
         start: 'top top',
-        endTrigger: '#works',
+        endTrigger: '#portfolio',
         end: 'top top',
         scrub: 1,
         pin: true,
