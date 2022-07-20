@@ -61,11 +61,9 @@ function isRun(id){
     </div>
 </template>
 <style lang="scss">
-
-
 .fliper{
     position: relative;
-    overflow-y: hidden;
+    overflow: hidden;
     h1{
         margin: 0;
     }
