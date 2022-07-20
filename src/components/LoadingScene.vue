@@ -24,10 +24,11 @@ function CheckLoadStatus(){
     }
 }
 function loaded(){
+    window.scrollTo({top:0,left:0})
     isLoadedToHidden.value = true;
 }
 
-setTimeout( CheckLoadStatus, 5000 );
+setTimeout( CheckLoadStatus, 3000 );
 </script>
 <template>
 <div class="pos-fixed fullScreen zIndex-L1 bg-halfBlue" :class="{'dis-none':isLoadedToHidden}">
