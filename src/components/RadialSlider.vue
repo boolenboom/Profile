@@ -115,6 +115,13 @@ function visibleChange(eventInfo){
         height: 100vh;
         opacity: 0;
         pointer-events: none;
+        background-image: var(--imageUrl);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @include phone-width{
+            background-size: 200% 200%;
+        }
         .indicator{
             position: absolute;
             width: 100vw;
@@ -199,8 +206,8 @@ function visibleChange(eventInfo){
         clip-path: circle( var(--progress-percent, 5%) at 92.14% 50%);
         transform-origin: 92.14% 50%;
         @include phone-width{
-            clip-path: circle( var(--progress-percent, 20%) at 100% 95%);
-            transform-origin: 100% 100%;
+            clip-path: circle( var(--progress-percent, 44px) at 93% 94%);
+            transform-origin: 93% 94%;
         }
         .indicator-name{
             right: 13vw;
@@ -217,8 +224,8 @@ function visibleChange(eventInfo){
         clip-path: circle( var(--progress-percent, 5%) at 7.86% 50%);
         transform-origin: 7.86% 50%;
         @include phone-width{
-            clip-path: circle( var(--progress-percent, 20%) at 0% 95%);
-            transform-origin: 0% 100%;
+            clip-path: circle( var(--progress-percent, 44px) at 7% 94%);
+            transform-origin: 5% 94%;
         }
         .indicator-name{
             left: 13vw;
