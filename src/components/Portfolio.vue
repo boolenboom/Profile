@@ -120,11 +120,6 @@ article{
     }
     p{
         font-weight: 700;
-        // text-shadow: 
-        //     -1px -1px 0 $main-color-secondary,
-        //     1px -1px 0 $main-color-secondary,
-        //     -1px 1px 0 $main-color-secondary,
-        //     1px 1px 0 $main-color-secondary;
         text-align: start;
         background-color: #ffffffdd;
         color: $main-color-secondary;
