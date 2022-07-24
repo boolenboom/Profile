@@ -1,7 +1,7 @@
 <script setup>
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { onMounted, toRefs } from 'vue';
+import { onMounted, onUnmounted, ref, toRefs } from 'vue';
 gsap.registerPlugin(ScrollTrigger);
 
 
@@ -27,14 +27,10 @@ onMounted(()=>{
         return gsap.utils.interpolate(0, 70, 1 - Math.pow(+((index / textAmount.value) - 1), 4))
     })
     let timeline = gsap.timeline();
-    let dom_blackHoleText = document.querySelector('.blackHole-text');
-    timeline.to( '.blackHole-text', {
+    timeline.to( '.stepFlash-text', {
         startAt: {
             opacity: 0,
-            scaleX: window.innerWidth / dom_blackHoleText.clientWidth,
-            x: '-50%',
-            left: '50vw',
-            y: function ( index ) {
+            top: function ( index ) {
                 return transformList[index] + 'vh';
             },
             clipPath: function( index ){
@@ -44,18 +40,18 @@ onMounted(()=>{
         },
         duration: 0.1
     })
-    .to( '.blackHole-text',{
+    .to( '.stepFlash-text',{
         opacity:1,
         ease: 'steps(1)',
         stagger:0.2,
         duration: 1.5
     })
-    .to('.blackHole-text', {
+    .to('.stepFlash-text', {
         clipPath: 'none',
         stagger: 0.2,
         duration: 1,
     })
-    .to( '.blackHole-text',{
+    .to( '.stepFlash-text',{
         opacity: 0,
         ease: 'steps(1)',
         stagger: 0.2,
@@ -72,14 +68,27 @@ onMounted(()=>{
         pin: true,
     })
 })
+
+let textScaleX = ref(1);
+function calcTextScale(){
+    let dom_stepFlashText = document.querySelector('.stepFlash-text');
+    textScaleX.value = window.innerWidth / dom_stepFlashText.clientWidth;
+}
+onMounted(()=>{
+    calcTextScale();
+    window.addEventListener('resize',calcTextScale);
+})
+onUnmounted(()=>{
+    window.removeEventListener('resize',calcTextScale)
+})
 </script>
 <template>
-<div class="blackHole-animation-stage">
-    <h1 v-for="i of textAmount" class="blackHole-text">{{aniText}}</h1>
+<div class="stepFlash-animation-stage" :style="`--text-scaleX: ${textScaleX}`">
+    <h1 v-for="i of textAmount" class="stepFlash-text">{{aniText}}</h1>
 </div>
 </template>
 <style lang="scss">
-.blackHole-animation-stage{
+.stepFlash-animation-stage{
     overflow: hidden;
     position: relative;
     z-index: 2;
@@ -87,12 +96,10 @@ onMounted(()=>{
     height: 100vh;
     width: 100%;
 
-    transform-style: preserve-3d;
-    perspective: 20px;
-    perspective-origin: center center;
-    .blackHole-text{
+    .stepFlash-text{
         position: absolute;
         top: 0;
+        left: 0;
         z-index: 10;
         letter-spacing: 16px;
         font-size: 40vh;
@@ -100,6 +107,8 @@ onMounted(()=>{
         word-break: break-all;
         white-space: nowrap;
         color: $main-color;
+        transform: scaleX(var(--text-scaleX, 1));
+        transform-origin: 0% 50%;
     }
     clip-path: none;
 }

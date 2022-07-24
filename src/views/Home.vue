@@ -6,7 +6,7 @@ import Portfolio from '../components/Portfolio.vue';
 import FixedBackground from '../components/FixedBackground.vue';
 import TransitionAnimation from '../components/TransitionAnimation.vue';
 import TextFlashMarquee from '../components/TextFlashMarquee.vue';
-import BlackHole from '../components/BlackHole.vue';
+import StepFlash from '../components/StepFlash.vue';
 
 </script>
 <template>
@@ -18,7 +18,7 @@ import BlackHole from '../components/BlackHole.vue';
 </TransitionAnimation>
 <Summary></Summary>
 <TransitionAnimation class="summary2portfolio">
-    <BlackHole aniText="work&links"></BlackHole>
+    <StepFlash aniText="work&links"></StepFlash>
 </TransitionAnimation>
 <Portfolio></Portfolio>
 </template>

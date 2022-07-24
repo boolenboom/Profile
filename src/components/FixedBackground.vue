@@ -76,6 +76,7 @@ onMounted(()=>{
 })
 // *
 
+let forceHidden = ref(false);
 onMounted(()=>{
     gsap.to('.sphere.master',{
         onStart:function(){
@@ -92,73 +93,54 @@ onMounted(()=>{
             window.addEventListener('pointermove', eyeTrack);
             eyeInit();
         },
-        y: '-100vh',
+        y: '-150vh',
         scrollTrigger:{
             trigger: '#hero',
             start: 'top -20%',
             endTrigger: '.transitionAnimation.hero2summary',
             end: 'top top',
+            toggleActions: 'play complete play complete',
             scrub: true,
+            onLeave:function(){
+                forceHidden.value = true;
+            },
+            onEnterBack: function () {
+                forceHidden.value = false;
+            }
         },
         duration: 1
-    });
-    
-    let summary = gsap.timeline()
-    .to('.sphere.summary2works',{
-        startAt:{
-            x:'100vw'
-        },
-        keyframes:[{
-            x: '-10vw',
-            duration: 8,
-        },{
-            y: '100vh',
-            duration: 3,
-            delay: 5
-        },{
-            x: 0,
-            duration: 0.1,
-            delay: 0.1,
-            ease: 'step(1)'
-        }],
-        scrollTrigger:{
-            trigger:'#summary',
-            start:'bottom bottom',
-            endTrigger: '#summary',
-            end:'bottom 10%',
-            scrub:true
-        }
     });
 
     let summary2works = gsap.timeline()
     .to('.sphere.summary2works',{
-        y: 0,
+        y: '200vh',
+        scale:1,
+        duration:1
+    })
+    .to('.sphere.summary2works',{
+        y: '100vh',
         scale: 10,
-        duration: 0.5,
+        duration: 1.5,
         delay: 0.3
     })
     .to('.sphere.summary2works', {
         scale: 14,
-        duration: 1
+        duration: 2
     })
     .to('.sphere.summary2works', {
-        y: '-100vh',
+        y: 0,
         ease: 'expo',
-        duration: 0.3
+        duration: 1
     });
 
     ScrollTrigger.create({
         animation:summary2works,
         trigger:'#summary',
-        start:'bottom 30%',
+        start:'bottom bottom',
         endTrigger: '#portfolio',
         end: 'top top',
-        scrub:true
+        scrub:0.5
     });
-
-    window.addEventListener('resize',()=>{
-        ScrollTrigger.refresh();
-    })
 })
 </script>
 <template>
@@ -176,7 +158,7 @@ onMounted(()=>{
     </svg>
     <div class="fixedBackground pos-fixed fullScreen">
         <div class="stage dis-flex">
-            <div class="sphere master" :class="{'idle':isIdle}" :style="computedTransform">
+            <div class="sphere master" :class="{'idle':isIdle,'pushUp':forceHidden}" :style="computedTransform">
                 <div class="eye" :class="{'wink':winkTiming}" @transitionend="winkTimer"></div>
             </div>
             <div class="sphere summary2works">
@@ -221,6 +203,9 @@ onMounted(()=>{
             transition: transform .4s ease, border-bottom .35s, border-top .35s;
         }
     }
+    &.pushUp{
+        top: -150vh;
+    }
     .eye{
         position: absolute;
         top: 50%;
@@ -251,7 +236,7 @@ onMounted(()=>{
     }
 }
 .summary2works{
-    transition: transform 0.4s ease;
+    top: -50vh;
     width: 75vmin;
     height: 75vmin;
     @include pad-width{
