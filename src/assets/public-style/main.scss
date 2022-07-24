@@ -139,6 +139,9 @@ p{
 }
 .wrapper{
     padding: 0 15%;
+    @include phone-width{
+        padding: 0 5%;
+    }
 }
 
 .w-100{
