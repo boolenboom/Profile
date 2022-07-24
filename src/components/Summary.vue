@@ -10,7 +10,6 @@ function calcRange(){
     let dom = document.querySelector('#summary');
     start.value = dom.offsetTop + 200;
     end.value = start.value + dom.clientHeight - window.innerHeight - 400;
-    console.log('summary: ' + start.value, end.value);
 
     scroll.setRange(start.value, end.value);
 }
@@ -59,9 +58,11 @@ onMounted(()=>{
                     <path
                         d="M-4 277.309C163.642 219.942 546.961 126.06 779.106 209.467C1069.29 313.725 1098.54 481.335 1360.64 518.25C1622.74 555.164 1974.93 406.509 2035.19 296.265C2095.45 186.021 2233.52 78.7704 2373.35 66.7982C2513.17 54.826 3053.75 54.826 3754.05 325.697C4454.34 596.568 4760.32 207.471 5629.69 226.926C6499.06 246.381 6469.81 413.493 6362.75 402.019C6255.69 390.546 6403.12 290.279 6511.35 290.279C6597.93 290.279 6791.19 310.898 6877 321.207"
                         stroke="url(#fuseGradient)" stroke-width="12" />
-                    <circle class="connect light" :class="{ 'dis-none': scroll.status == 'initial'}" r="50"
+                    <circle class="connect light"
+                        :class="{ 'light-off': scroll.status == 'initial' || scroll.status == 'pass'}" r="50"
                         fill="url(#starLight)"></circle>
-                    <circle class="main light" :class="{ 'dis-none': scroll.status == 'initial'}" r="50"
+                    <circle class="main light"
+                        :class="{ 'light-off': scroll.status == 'initial' || scroll.status == 'pass'}" r="50"
                         fill="url(#starLight)"></circle>
                 </svg>
             </span>
@@ -92,7 +93,6 @@ onMounted(()=>{
                         </span>
                     </p>
                 </div>
-                <span>{{scroll}}</span>
             </article>
         </div>
     </section>
@@ -120,6 +120,9 @@ onMounted(()=>{
             }
             &.main{
                 offset-path: path("M-4 277.309C163.642 219.942 546.961 126.06 779.106 209.467C1069.29 313.725 1098.54 481.335 1360.64 518.25C1622.74 555.164 1974.93 406.509 2035.19 296.265C2095.45 186.021 2233.52 78.7704 2373.35 66.7982C2513.17 54.826 3053.75 54.826 3754.05 325.697C4454.34 596.568 4760.32 207.471 5629.69 226.926C6499.06 246.381 6469.81 413.493 6362.75 402.019C6255.69 390.546 6403.12 290.279 6511.35 290.279C6597.93 290.279 6791.19 310.898 6877 321.207");
+            }
+            &.light-off{
+                animation: lightOff .3s .2s ease forwards;
             }
             offset-distance: calc(var(--progress) * 100%);
             transition: offset-distance .3s ease-out;
@@ -208,6 +211,11 @@ onMounted(()=>{
         50%{
             opacity: calc(random() * 0.2 + 0.75);
             transform: scale(calc(random() * 0.1 + 0.88));
+        }
+    }
+    @keyframes lightOff {
+        to{
+            transform: scale(0);
         }
     }
 }
