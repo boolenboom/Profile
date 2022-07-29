@@ -31,16 +31,38 @@ function loaded(){
 setTimeout( CheckLoadStatus, 3000 );
 </script>
 <template>
-<div class="pos-fixed fullScreen zIndex-L1 bg-halfBlue" :class="{'dis-none':isLoadedToHidden}">
+<div class="pos-fixed fullScreen zIndex-L1 loading" :class="{'loaded':isLoadedToHidden}">
     <!-- <StarrySky></StarrySky> -->
-    Loading...
+    <div class="dis-flex">
+        <span>
+            Loading...
+        </span>
+        <img src="../assets/loading/332-loader-3-lineal.gif"/>
+    </div>
 </div>
 </template>
 <style lang="scss">
-.bg-halfBlue{
-    background-color: rgba($color: $main-color, $alpha: .8);
-    *{
+.loading{
+    background-color: $main-color;
+    transition: opacity .5s ease, z-index .1s .5s linear;
+    div{
         color: $text-color;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
+        &.dis-flex{
+            align-items: center;
+        }
+    }
+    img{
+        width: 400px;
+        transform: rotate(320deg);
+    }
+    &.loaded{
+        opacity: 0;
+        z-index: -99;
     }
 }
 </style>
