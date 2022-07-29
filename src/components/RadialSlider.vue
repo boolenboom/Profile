@@ -287,10 +287,6 @@ function visibleChange(eventInfo){
 .initial li.next-slide,.initial li.prev-slide{
     transform: translateY(300px);
 }
-.initial li.visible{
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
-}
 .initial .radial-slider{
     transform: translateY(100vh);
 }
