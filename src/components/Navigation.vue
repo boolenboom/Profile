@@ -55,9 +55,7 @@ onUnmounted(()=>{
                 <div></div>
             </button>
             <a href="/#summary" @click="menu.close()">Summary</a>
-            <a href="/#portfolio" @click="menu.close()">Portfolio & Links</a>
-            <a href="/#skills" @click="menu.close()">Skills</a>
-            <a href="/#experience" @click="menu.close()">Experience</a>
+            <a href="/#portfolio" @click="menu.close()">Works & Links</a>
         </menu>
     </nav>
 </template>
