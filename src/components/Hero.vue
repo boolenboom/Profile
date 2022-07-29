@@ -7,7 +7,7 @@ import TextFliper from './TextFliper.vue';
         <div class="intro">
             <h1 class="text-larger">嗨 !</h1>
             <div class="dis-flex text-larger">
-                <h1> 我 </h1><TextFliper :textList="['是李東遠', '追尋核心', '是前端工程師']"></TextFliper>
+                <h1> 我 </h1><TextFliper :textList="['是李東遠', '熱愛思考', '走在開發的路上']"></TextFliper>
             </div>
             <div class="personalInfo text-medium">
                 <h3>臺中教育大學 數位內容科技學系</h3>
