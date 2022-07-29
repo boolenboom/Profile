@@ -73,24 +73,32 @@ onMounted(()=>{
                         <span>
                             喜歡透過各種方式來尋找能達成目標且一石二鳥的解決辦法，文章、實作經驗、談話中找出有價值的資訊，幫助我用更多角度去挖掘問題本質。
                         </span>
-                        <img :class="{'scale-up':scroll.progress > 0}" src="../assets/head-sticker/Lee_icon.png"
-                            alt="personal icon">
+                        <img class="icon scale-up"
+                            src="../assets/head-sticker/Profile_icon.png" alt="personal icon">
                     </p>
                     <p id="p2" class="dis-flex">
-                        <img :class="{'scale-up':scroll.progress > 0.4}" src="../assets/head-sticker/Lee_icon.png"
-                            alt="personal icon">
-                        <span>
-                            透過Vue框架幫家人的工作坊做出有RWD的主視覺介紹網頁；
-                            串接交通部的公共運輸整合資訊流通服務平臺(PTX)做出旅遊網站，以及弄一些簡單的小嘗試增進技術的應用。
-                        </span>
+                    <div class="icon" :class="{'scale-up':scroll.progress > 0.4}">
+                        <img src="../assets/summary/1108-ferris-wheel-lineal.gif" alt="personal icon">
+                        <div class="img-switch">
+                            <img class="grow-width" src="../assets/summary/control_panel_lightOn.png" alt="">
+                            <img src="../assets/summary/control_panel_lightOn.png" alt="">
+                            <img class="switch" src="../assets/summary/control_panel.png" alt="">
+                        </div>
+                    </div>
+                    <span>
+                        透過Vue框架幫家人的工作坊做出有RWD的主視覺介紹網頁；
+                        串接交通部的公共運輸整合資訊流通服務平臺(PTX)做出旅遊網站，以及弄一些簡單的小嘗試增進技術的應用。
+                    </span>
                     </p>
                     <p id="p3" class="dis-flex">
-                        <img :class="{'scale-up':scroll.progress > 0.75}" src="../assets/head-sticker/Lee_icon.png"
-                            alt="personal icon">
-                        <span>
-                            在快速變化的前端領域裡，需要的是敏捷思維以及持續學習的精神，這對我來說就是會源源不絕噴出寶物的地方，等著我去挖掘。
-                            也希望能夠更深入軟體領域，認識更多新事物，並且創造價值。
-                        </span>
+                    <div class="icon img-fadeInOut" :class="{'scale-up':scroll.progress > 0.75}">
+                        <img src="../assets/summary/treasure_plant_map.png" alt="">
+                        <img class="switch" src="../assets/summary/treasure_plant_map_light.png" alt="">
+                    </div>
+                    <span>
+                        在快速變化的前端領域裡，需要的是敏捷思維以及持續學習的精神，這對我來說就是會源源不絕噴出寶物的地方，等著我去挖掘。
+                        也希望能夠更深入軟體領域，認識更多新事物，並且創造價值。
+                    </span>
                     </p>
                 </div>
             </article>
@@ -98,6 +106,7 @@ onMounted(()=>{
     </section>
 </template>
 <style lang="scss">
+
 #summary {
     height: 400vh;
     --left-padding:10vw;
@@ -149,50 +158,113 @@ onMounted(()=>{
                 flex-direction: column;
             }
             span{
-                flex: 3 3 auto;
-            }
-            img{
-                flex: 0 1 auto;
-                width: auto;
-                height: 40vh;
+                flex: 3 1 60vw;
                 @include phone-width{
-                    width: 50vw;
-                    height: auto;
+                    flex-basis: auto;
                 }
-                background-color: #fff;
-                border-radius: 25%;
-                transition: transform .4s cubic-bezier(0.13, 2.57, 1, 0.06);
+            }
+            .icon{
+                position: relative;
+                flex: 1 2 auto;
+                transition: transform .4s ease;
                 transform: scale(0);
                 &.scale-up{
+                    transition-timing-function: cubic-bezier(0.13, 2.57, 1, 0.06);
                     transform: scale(1);
                 }
+            }
+            img{
+                width: unset;
             }
         }
         #p1{
             padding-inline-start: var(--left-padding);
             img{
                 margin-inline-start: auto;
+                width: 100%;
             }
             @include phone-width{
                 span {
                     margin-inline-end: 20vw;
                 }
+                img{
+                    width: unset;
+                }
             }
         }
         #p2{
-            @include phone-width{
-                span{
-                    margin-block-start: 5vh;
-                    margin-inline-start: 20vw;
+            .img-switch{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                img.switch{
+                    animation: zIndexSwitch 4s linear infinite;
+                }
+                img.grow-width{
+                    position: relative;
+                    width: 30vmin;
+                }
+                img{
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                }
+                @keyframes zIndexSwitch {
+                    0%{
+                        z-index: 1;
+                    }
+                    25%{
+                        z-index: -1;
+                    }
+                    40%{
+                        z-index: -1;
+                    }
                 }
             }
         }
         #p3{
+            .img-fadeInOut{
+                position: relative;
+                width: 100%;
+                animation: float 8s ease-in-out infinite;
+                img{
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                }
+                img.switch{
+                    animation: fadeSwitch 7s ease-in-out infinite ;
+                }
+                @keyframes fadeSwitch {
+                    0%{
+                        opacity: 0;
+                    }
+                    5%{
+                        opacity: 0;
+                    }
+                    15%{
+                        opacity: 1;
+                    }
+                    80%{
+                        opacity: 1;
+                    }
+                    90%{
+                        opacity: 0;
+                    }
+                    100%{
+                        opacity: 0;
+                    }
+                }
+                @keyframes float {
+                    50%{
+                        transform: translateY(-40px);
+                    }
+                }
+            }
             padding-inline-end: var(--left-padding);
             @include phone-width {
                 flex-direction: column-reverse;
                 span{
-                    margin-inline-start: 20vw;
                     transform: translateY(-10vh);
                 }
             }
