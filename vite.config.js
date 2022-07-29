@@ -6,7 +6,7 @@ const pathSrc = path.resolve(__dirname, 'src');
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: process.env.NODE_ENV === 'production' ? './Profile/' : './',
+  base: process.env.NODE_ENV === 'production' ? '/Profile/' : '/',
   resolve:{
       alias:{
       '/@': pathSrc,
