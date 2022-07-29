@@ -81,7 +81,7 @@ function visibleChange(eventInfo){
     <div class="radial-slider-wrapper">
         <ul class="radial-slider" :style="`--slide-way:${slideWay}`">
             <li v-for="i of contentAmount" class="dis-flex center" :class="statusList[i - 1]"
-                :style="`--imageUrl:url(${imageList[i - 1]});`" @click.prevent="slideTo( i - 1 )"
+                :style="`--imageUrl:url(${imageList[i - 1]});`" @click="slideTo( i - 1 )"
                 @transitionend="visibleChange">
                 <div class="wrapper">
                     <slot :name="`slide${i}`">
@@ -91,14 +91,17 @@ function visibleChange(eventInfo){
                     <span class="indicator-name">
                         <slot :name="`title${i}`"></slot>
                     </span>
-                    <span class="left">&laquo;</span>
-                    <span class="right">&raquo;</span>
+                    <span class="left"></span>
+                    <span class="right"></span>
                 </span>
             </li>
         </ul>
     </div>
 </template>
 <style lang="scss">
+
+
+
 
 
 .radial-slider-wrapper{
@@ -116,11 +119,12 @@ function visibleChange(eventInfo){
         opacity: 0;
         pointer-events: none;
         background-image: var(--imageUrl);
-        background-position: center center;
+        background-position: right 40% top 10%;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 180%;
         @include phone-width{
             background-size: 200% 200%;
+            background-position: right 80% top 10%;
         }
         .indicator{
             position: absolute;
@@ -137,13 +141,41 @@ function visibleChange(eventInfo){
         .left,.right{
             font-weight: bold;
             position: absolute;
-            height: fit-content;
+            height: calc(5vw + 5vh);
+            width: calc(5vw + 5vh);
+            @include phone-width{
+                height: 88px;
+                width: 88px;
+            }
+            border-radius: 50%;
             top: 0;
             bottom: 0;
             margin: auto;
+            &::after{
+                display: block;
+                content: '';
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-color: $main-color;
+                clip-path: polygon(50% 24%,
+                    12% 55%,
+                    30% 76%,
+                    29% 65%,
+                    22% 57%,
+                    50% 35%,
+                    78% 57%,
+                    71% 65%,
+                    50% 49%,
+                    29% 65%,
+                    30% 76%,
+                    50% 60%,
+                    70% 76%,
+                    88% 55%);
+            }
             @include phone-width{
                 top: unset;
-                bottom: 2vh;
+                bottom: 1.4vh;
             }
         }
         .wrapper{
@@ -161,7 +193,8 @@ function visibleChange(eventInfo){
         position: relative;
         opacity: 1;
         pointer-events: all;
-        transition: border-radius 0.2s;
+        transition: border-radius 0.2s, background-position 20s cubic-bezier(0.24, 0.04, 0.77, 0.95);
+        background-position: right 40% top 65%;
         .indicator{
             display: none;
         }
@@ -217,7 +250,7 @@ function visibleChange(eventInfo){
         }
         .right{
             right: 7.86vw;
-            transform: translateX(45%);
+            transform: translateX(45%) rotate(90deg);
         }
     }
     > li.prev-slide{
@@ -235,7 +268,7 @@ function visibleChange(eventInfo){
         }
         .left{
             left: 7.86vw;
-            transform: translateX(-45%);
+            transform: translateX(-45%) rotate(-90deg);
         }
     }
 }

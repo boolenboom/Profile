@@ -18,7 +18,7 @@ const props = defineProps({
                 <path id="pathCircle" stroke="#fff" fill="none" d="M42 0a42 42 0 0 1 0 84a42 42 0 0 1 0 -84z">
                 </path>
             </defs>
-            <text>
+            <text fill="#21326a" stroke="#21326a" stroke-width="1">
                 <textPath href="#pathCircle">
                     <slot></slot>
                 </textPath>
@@ -30,9 +30,10 @@ const props = defineProps({
 .rotate-effect {
     display: block;
     font-size: var(--fz,24px);
-    inline-size: var(--btn-radius,84px);
-    block-size: var(--btn-radius,84px);
-    line-height: var(--btn-radius,84px);
+    inline-size: var(--btn-radius,75px);
+    block-size: var(--btn-radius,75px);
+    line-height: var(--btn-radius,75px);
+    
     @include phone-width{
         font-size: var(--fz,24px);
         inline-size: var(--btn-radius,63px);
