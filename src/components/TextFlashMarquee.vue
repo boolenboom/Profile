@@ -57,7 +57,7 @@ onMounted(()=>{
 
     ScrollTrigger.create({
         animation: timeline,
-        trigger: '.transitionAnimation.hero2summary .pin',
+        trigger: '.animation-stage',
         start: 'top top',
         end: '+=90%',
         scrub: 1,

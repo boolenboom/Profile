@@ -1,8 +1,6 @@
 <template>
 <div class="transitionAnimation fullScreen">
-    <div class="pin">
-        <slot></slot>
-    </div>
+    <slot></slot>
 </div>
 </template>
 <style>
