@@ -20,42 +20,44 @@ let menu = function(){
 let direction = ref('scrollUp');
 let checkScrollDirect = function (){
     let lastPos = 0;
-    let ticking = false;
-    return function(){
-        if(!ticking){
-            requestAnimationFrame(()=>{
-                if(window.scrollY > lastPos){
-                    direction.value = 'scrollDown';
-                    menu.close();
-                }
-                else if(window.scrollY < lastPos){
-                    direction.value = 'scrollUp';
-                }
-                ticking = false;
-                lastPos = window.scrollY;
-            })
+    return function(entries){
+        let progress = entries[0].intersectionRatio;
+        if(progress > lastPos){
+            direction.value = 'scrollDown';
+            menu.close();
         }
-        ticking = true;
+        else if(progress < lastPos){
+            direction.value = 'scrollUp';
+        }
+        lastPos = progress;
     }
-}
+}()
 onMounted(()=>{
-    window.addEventListener( 'scroll', checkScrollDirect() );
-})
-onUnmounted(()=>{
-    window.removeEventListener( 'scroll', checkScrollDirect() );
+    let watchDom = document.querySelector('#app');
+    let ob = new IntersectionObserver(checkScrollDirect, {
+        rootMargin: '99999px 0px 0px 0px',
+        threshold: function () {
+            let arr = Array(10000).fill(0);
+            for (let index = 0; index < arr.length; index++) {
+                arr[index] = (index + 1) * 0.0001;
+            }
+            return arr;
+        }(),
+    })
+    ob.observe(watchDom);
 })
 </script>
 <template>
     <nav class="nav pos-fixed w-100 dis-flex" :class="direction">
-        <a href="/#hero" class="LOGO">Lee's profile</a>
+        <a href="#hero" class="LOGO">Lee's profile</a>
         <menu class="dis-flex text-medium" :class="`${menu.status()}`">
             <button class="menu-switch" @click="menu.toggle()">
                 <div></div>
                 <div></div>
                 <div></div>
             </button>
-            <a href="/#summary" @click="menu.close()">Summary</a>
-            <a href="/#portfolio" @click="menu.close()">Works & Links</a>
+            <a href="#summary" @click="menu.close()">Summary</a>
+            <a href="#portfolio" @click="menu.close()">Works & Links</a>
         </menu>
     </nav>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue';
 
 // * 外部參數
 const props = defineProps({
@@ -19,25 +19,26 @@ const { contentAmount } = toRefs( props );
 // * 管理項目狀態，
 // - visible為目前項目，呈現於中間；
 // - next-slide為下個項目，右邊圓圈；prev-slide為前個項目，左邊圓圈；
-// * is-animating + move-up/scale-down為動畫中。
-let statusList = reactive([]);
-statusList.length = contentAmount.value;
+// * animating + move-up/scale-down為動畫中。
+let statusList = reactive(Array(contentAmount.value));
 
 // * 滑動方向
 let slideWay = ref(-1);
 
 // * 目前呈現項目的索引、互動後將要呈現的索引
 let currentIndex = ref(0);
-let nextIndex = ref(0);
 
 function refreshSL(){
-    statusList.fill('');
     const next = (currentIndex.value + 1) % contentAmount.value;
     const prev = (currentIndex.value + contentAmount.value - 1) % contentAmount.value;
 
     statusList[currentIndex.value] = 'visible ';
     statusList[ next ] = 'next-slide static ';
     statusList[ prev ] = 'prev-slide static ';
+    for (let i = 0; i < contentAmount.value; i++) {
+        if (i == currentIndex.value || i == next || i == prev) continue;
+        statusList[i] = '';
+    }
 }
 onMounted(()=>{
     refreshSL();
@@ -45,52 +46,34 @@ onMounted(()=>{
 
 // * 使用者互動行為
 function slideTo( dest ){
-    nextIndex.value = dest;
-    console.log('next index: ' + nextIndex.value);
+    statusList[dest] = String(statusList[dest]).replace(' static', ' animating move-up');
+    console.log('next index: ' + dest);
+    const loopIndex = contentAmount.value - 1;
+    if((currentIndex.value * 1 + dest * 1) % loopIndex == 0) slideWay.value = -(dest - currentIndex.value) % 2; //循環反向運算
+    slideWay.value = (dest - currentIndex.value) % 2;
+    const prev = (currentIndex.value + loopIndex+1 - slideWay.value) % (loopIndex + 1);
+    statusList[prev] = String(statusList[prev]).replace(' static', ' animating scale-down');
+    setTimeout(visibleChange(dest), 410);
 }
-watch( nextIndex, (newVal, oldVal)=>{
-    statusList[newVal] = statusList[newVal].split(' ')
-        .filter( str => str !== 'static' && ( str === 'next-slide' || str === 'prev-slide' ) );
-    statusList[newVal] += ' is-animating move-up ';
-
-    let prev = (currentIndex.value + contentAmount.value - (newVal - currentIndex.value)) % contentAmount.value;
-    statusList[prev] = statusList[prev].split(' ')
-        .filter( str => str !== 'static' && ( str === 'next-slide' || str === 'prev-slide' ) );
-    statusList[prev] += ' is-animating scale-down ';
-
-    if(newVal == 0 && oldVal == contentAmount.value - 1){
-        slideWay.value = 1;
-    }
-    else if(newVal == contentAmount.value - 1 && oldVal == 0 ){
-        slideWay.value = -1;
-    }
-    else{
-        slideWay.value = nextIndex.value - currentIndex.value;
-    }
-});
 
 // * 自動行為
-function visibleChange(eventInfo){
-    if( !eventInfo.target.className.includes('move-up') ) return;
-    console.log(eventInfo);
-    currentIndex.value = nextIndex.value;
-    refreshSL();
+function visibleChange(index){
+    return function(){
+        currentIndex.value = index;
+        refreshSL();
+    }
 }
 </script>
 <template>
     <div class="radial-slider-wrapper">
         <ul class="radial-slider" :style="`--slide-way:${slideWay}`">
             <li v-for="i of contentAmount" class="dis-flex center" :class="statusList[i - 1]"
-                :style="`--imageUrl:url(${imageList[i - 1]});`" @click="slideTo( i - 1 )"
-                @transitionend="visibleChange">
+                :style="`--imageUrl:url(${imageList[i - 1]});`" @click="slideTo( i - 1 )">
                 <div class="wrapper">
                     <slot :name="`slide${i}`">
                     </slot>
                 </div>
                 <span class="indicator text-large">
-                    <span class="indicator-name">
-                        <slot :name="`title${i}`"></slot>
-                    </span>
                     <span class="left"></span>
                     <span class="right"></span>
                 </span>
@@ -99,17 +82,11 @@ function visibleChange(eventInfo){
     </div>
 </template>
 <style lang="scss">
-
-
-
-
-
 .radial-slider-wrapper{
     position: relative;
     overflow: hidden;
 }
 .radial-slider{
-    transition: transform 0.2s;
     > li{
         position: absolute;
         top: 0;
@@ -137,46 +114,50 @@ function visibleChange(eventInfo){
                 bottom: 0;
                 margin: auto;
             }
-        }
-        .left,.right{
-            font-weight: bold;
-            position: absolute;
-            height: calc(5vw + 5vh);
-            width: calc(5vw + 5vh);
-            @include phone-width{
-                height: 88px;
-                width: 88px;
-            }
-            border-radius: 50%;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            &::after{
-                display: block;
-                content: '';
-                position: relative;
-                width: 100%;
-                height: 100%;
-                background-color: $main-color;
-                clip-path: polygon(50% 24%,
-                    12% 55%,
-                    30% 76%,
-                    29% 65%,
-                    22% 57%,
-                    50% 35%,
-                    78% 57%,
-                    71% 65%,
-                    50% 49%,
-                    29% 65%,
-                    30% 76%,
-                    50% 60%,
-                    70% 76%,
-                    88% 55%);
-            }
-            @include phone-width{
-                top: unset;
-                bottom: 1.4vh;
-            }
+                        .left,
+                        .right {
+                            position: absolute;
+                            height: calc(5vw + 5vh);
+                            width: calc(5vw + 5vh);
+            
+                            @include phone-width {
+                                height: 88px;
+                                width: 88px;
+                            }
+            
+                            border-radius: 50%;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+            
+                            &::after {
+                                display: block;
+                                content: '';
+                                position: relative;
+                                width: 100%;
+                                height: 100%;
+                                background-color: $main-color;
+                                clip-path: polygon(50% 24%,
+                                        12% 55%,
+                                        30% 76%,
+                                        29% 65%,
+                                        22% 57%,
+                                        50% 35%,
+                                        78% 57%,
+                                        71% 65%,
+                                        50% 49%,
+                                        29% 65%,
+                                        30% 76%,
+                                        50% 60%,
+                                        70% 76%,
+                                        88% 55%);
+                            }
+            
+                            @include phone-width {
+                                top: unset;
+                                bottom: 1.4vh;
+                            }
+                        }
         }
         .wrapper{
             transition: all .4s ease-out;
@@ -193,19 +174,20 @@ function visibleChange(eventInfo){
         position: relative;
         opacity: 1;
         pointer-events: all;
-        transition: border-radius 0.2s, background-position 20s cubic-bezier(0.24, 0.04, 0.77, 0.95);
+        transition: background-position 20s cubic-bezier(0.24, 0.04, 0.77, 0.95);
         background-position: right 40% top 65%;
         .indicator{
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
     }
-    > li.is-animating,
+    > li.animating,
     > li.prev-slide,
     > li.next-slide{
         opacity: 1;
         pointer-events: all;
     }
-    > li.is-animating{
+    > li.animating{
         z-index: 2;
     }
     > li.prev-slide,
@@ -219,11 +201,11 @@ function visibleChange(eventInfo){
         }
     }
     > li.static:hover{
-        --progress-percent: 50%;
+        --progress-percent: 30%;
     }
     > li.move-up{
         /* class added to the navigation round element when clicked - used to create the click effect */
-        --progress-percent: 120%;
+        --progress-percent: 140%;
         @include phone-width{
             --progress-percent: 140%;
         }
@@ -232,7 +214,6 @@ function visibleChange(eventInfo){
         }
     }
     > li.scale-down{
-        /* class added to the navigation round element to create the scale down effect  */
         transform: scale(0);
     }
     > li.next-slide{
@@ -246,7 +227,8 @@ function visibleChange(eventInfo){
             right: 13vw;
         }
         .left{
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
         .right{
             right: 7.86vw;
@@ -264,7 +246,8 @@ function visibleChange(eventInfo){
             left: 13vw;
         }
         .right{
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
         .left{
             left: 7.86vw;
@@ -279,15 +262,5 @@ function visibleChange(eventInfo){
     to{
         transform: scale(1);
     }
-}
-
-.initial li.visible .wrapper{
-    transform: translateY(300px);
-}
-.initial li.next-slide,.initial li.prev-slide{
-    transform: translateY(300px);
-}
-.initial .radial-slider{
-    transform: translateY(100vh);
 }
 </style>
