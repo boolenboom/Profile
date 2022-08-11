@@ -1,6 +1,11 @@
 # AlanLee Profile
 目前已經上線囉，[點這裡前往](https://boolenboom.github.io/Profile/)
 
+## V1.3更動內容
+- scroll事件改寫、GSAP減少使用
+- 確保summary不會出現內部垂直scroll bar
+- portfolio標題輪廓顏色透明度調整、指標icon位置對到位置上、介紹文字移動以避免被擋住
+- master手機變版將resume按鈕移到文字下方
 ## V1.2目前已知問題
 
 - 手機無法支撐的運算量 -> scroll事件改寫(o)、GSAP減少使用
