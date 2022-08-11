@@ -25,7 +25,7 @@ html{
         --text-larger: 3.9rem;
     }
     @include small-phone-width{
-        --text-small: 1rem;
+        --text-small: .92rem;
         --text-medium: 1rem;
         --text-large: 2.4rem;
         --text-larger: 3rem;
@@ -69,8 +69,7 @@ p{
         --text-size-ratio: 1.5
     }
     @include small-phone-width{
-        --text-size-ratio: 1.25;
-        line-height: 1.5;
+        --text-size-ratio: 1.15;
     }
 }
 .text-medium{
@@ -82,11 +81,11 @@ p{
         --text-size-ratio: 1.8;
     }
     @include phone-width {
-        --text-size-ratio: 1.4;
+        --text-size-ratio: 1.2;
     }
     @include small-phone-width {
         --text-size-ratio: 1;
-        line-height: 1.5;
+        line-height: 1.2;
         letter-spacing: 3px;
     }
 }
@@ -99,14 +98,13 @@ p{
         --text-size-ratio: 1.25;
     }
     @include phone-width {
-        --text-size-ratio: 1.2;
+        --text-size-ratio: 1.1;
     }
     @include small-phone-width {
-        --text-size-ratio: 0.8;
+        --text-size-ratio: 0.6;
     }
 }
 .text-larger{
-    --text-larger: calc(3rem * var(--text-size-ratio));
     font-size: calc(3rem * var(--text-size-ratio));
     @include pc-width {
         --text-size-ratio: 2;
@@ -115,10 +113,10 @@ p{
         --text-size-ratio: 1.4;
     }
     @include phone-width {
-        --text-size-ratio: 1.3;
+        --text-size-ratio: 1.2;
     }
     @include small-phone-width {
-        --text-size-ratio: 1;
+        --text-size-ratio: .65;
     }
 }
 .text-align-start{

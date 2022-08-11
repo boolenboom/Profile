@@ -35,7 +35,7 @@ onMounted(()=>{
     let timeline = gsap.timeline();
     timeline.to('.text-column', { 
         xPercent: function(index){
-            return index % 2 ? randomPos(-80, -120) : randomPos(60, 80);
+            return index % 2 ? randomPos(-60, -80) : randomPos(60, 80);
         },
         duration: 5,
         ease:'linear' })
@@ -81,6 +81,7 @@ onMounted(()=>{
 .text-column {
     white-space: nowrap;
     height: calc(100vh / var(--col));
+    width: fit-content;
     position: relative;
     left: var(--start-pos);
     span {

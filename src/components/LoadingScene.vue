@@ -28,20 +28,20 @@ function loaded(){
     isLoadedToHidden.value = true;
 }
 
-setTimeout( CheckLoadStatus, 3000 );
+setTimeout( CheckLoadStatus, 4000 );
 </script>
 <template>
 <div class="pos-fixed fullScreen zIndex-L1 loading" :class="{'loaded':isLoadedToHidden}">
     <!-- <StarrySky></StarrySky> -->
     <div class="dis-flex">
-        <span>
+        <span class="text-large" data-text="Loading...">
             Loading...
         </span>
-        <img src="../assets/loading/332-loader-3-lineal.gif"/>
     </div>
 </div>
 </template>
 <style lang="scss">
+
 .loading{
     background-color: $main-color;
     transition: opacity .5s ease, z-index .1s .5s linear;
@@ -55,14 +55,41 @@ setTimeout( CheckLoadStatus, 3000 );
         &.dis-flex{
             align-items: center;
         }
-    }
-    img{
-        width: 400px;
-        transform: rotate(320deg);
+        span{
+            position: relative;
+            padding: 36px;
+            &::after{
+                content: attr(data-text);
+                overflow: hidden;
+                position: absolute;
+                padding: inherit;
+                padding-right: 0;
+                top: 0;
+                left: 0;
+                border-right: 8px solid;
+                white-space: nowrap;
+                max-width: 0px;
+                color: #fff;
+                text-shadow: 0 0 20px #fff, 0 0 12px #fff;
+                animation: printing 4s ease-in-out infinite;
+            }
+            @keyframes printing {
+                30%{
+                    max-width: 80%;
+                }
+                53%{
+                    max-width: 20%;
+                }
+                74%{
+                    max-width: 63%;
+                }
+            }
+        }
     }
     &.loaded{
         opacity: 0;
         z-index: -99;
+        pointer-events: none;
     }
 }
 </style>

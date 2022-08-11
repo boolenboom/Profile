@@ -31,7 +31,7 @@ onMounted(()=>{
 let offsetLeft = ref(0);
 function setOffsetLeft(){
     let verticalSection = document.querySelector('#summary div.pos-sticky');
-    offsetLeft.value = verticalSection.scrollWidth - verticalSection.clientWidth;
+    offsetLeft.value = verticalSection.scrollWidth;
 }
 onMounted(()=>{
     setOffsetLeft();
@@ -166,8 +166,10 @@ window.addEventListener('resize',setOffsetLeft)
             }
             span{
                 flex: 3 1 60vw;
+                white-space: pre-line;
                 @include phone-width{
                     flex-basis: auto;
+                    line-height: 1.1;
                 }
             }
             .icon{
@@ -196,6 +198,11 @@ window.addEventListener('resize',setOffsetLeft)
                 }
                 img{
                     width: unset;
+                }
+            }
+            @include small-phone-width{
+                span{
+                    margin-inline-end: 0;
                 }
             }
         }
@@ -263,16 +270,19 @@ window.addEventListener('resize',setOffsetLeft)
                     }
                 }
                 @keyframes floatUpDown {
+                    from{
+                        transform: translateY(20px);
+                    }
                     50%{
-                        transform: translateY(-40px);
+                        transform: translateY(-20px);
+                    }
+                    to{
+                        transform: translateY(20px);
                     }
                 }
             }
             @include phone-width {
                 flex-direction: column-reverse;
-                span{
-                    transform: translateY(-10vh);
-                }
             }
         }
         #p4{

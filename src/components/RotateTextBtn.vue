@@ -33,12 +33,17 @@ const props = defineProps({
     inline-size: var(--btn-radius,75px);
     block-size: var(--btn-radius,75px);
     line-height: var(--btn-radius,75px);
-    
     @include phone-width{
-        font-size: var(--fz,24px);
-        inline-size: var(--btn-radius,63px);
-        block-size: var(--btn-radius,63px);
-        line-height: var(--btn-radius,63px);
+        font-size: var(--fz, 24px);
+            inline-size: var(--btn-radius, 56px);
+            block-size: var(--btn-radius, 56px);
+            line-height: var(--btn-radius, 56px);
+    }
+    @include small-phone-width{
+        font-size: var(--fz,18px);
+        inline-size: var(--btn-radius,36px);
+        block-size: var(--btn-radius,36px);
+        line-height: var(--btn-radius,36px);
     }
     will-change: transform;
     animation: touchRotate 8s linear infinite paused forwards;

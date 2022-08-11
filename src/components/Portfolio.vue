@@ -127,16 +127,16 @@ article{
         grid-template: "head" auto
                         "img" 5fr
                         "context" 4fr / auto;
-        gap: 24px;
-        height: 95vh;
+        gap: 12px;
+        height: 75vh;
     }
     h2{
         color: $main-color-secondary;
         text-shadow: 
-        rgba($color: #fff, $alpha: .8) 2px 2px 0,
-        rgba($color: #fff, $alpha: .8) -2px 2px 0,
-        rgba($color: #fff, $alpha: .8) 2px -2px 0,
-        rgba($color: #fff, $alpha: .8) -2px -2px 0;
+        rgba($color: #fff, $alpha: 1) 2px 2px 0,
+        rgba($color: #fff, $alpha: 1) -2px 2px 0,
+        rgba($color: #fff, $alpha: 1) 2px -2px 0,
+        rgba($color: #fff, $alpha: 1) -2px -2px 0;
         text-align: start;
         grid-area: head / head / head / head;
     }
@@ -145,6 +145,7 @@ article{
         text-align: start;
         background-color: #ffffffaa;
         color: $main-color-secondary;
+        white-space: pre-line;
         a{
             color: $main-color-secondary;
             text-decoration:underline;
@@ -157,6 +158,11 @@ article{
         grid-area: context / context / context / context;
         @include phone-width{
             margin-inline-end: 30%;
+        }
+        @include small-phone-width{
+            font-weight: 500;
+            margin-block-start: auto;
+            margin-inline-end: 0;
         }
     }
     .workImg{
@@ -172,6 +178,9 @@ article{
         position: absolute;
         top: 12px;
         padding: 24px;
+        @include small-phone-width{
+            padding: 12px;
+        }
         background-color: rgba($color: #fff, $alpha: .73);
         border-radius: 50%;
         backdrop-filter: blur(2px);
@@ -185,6 +194,10 @@ article{
             margin: auto;
             width: 36px;
             height: 36px;
+            @include small-phone-width{
+                width: 18px;
+                height: 18px;
+            }
             background-color: $main-color;
             clip-path: polygon(0 84%, 16% 100%, 80% 35%, 80% 78%, 100% 60%, 100% 0, 40% 0, 21% 20%, 65% 20%);
         }

@@ -1,4 +1,4 @@
-<script setup>import { onMounted, onUnmounted, ref } from 'vue';
+<script setup>import { onMounted, ref } from 'vue';
 
 let menu = function(){
     let switchStatus = ref('close');
@@ -62,7 +62,6 @@ onMounted(()=>{
     </nav>
 </template>
 <style lang="scss">
-
 .nav{
     top: 0;
     left: 0;
@@ -78,7 +77,6 @@ onMounted(()=>{
     menu{
         margin-left: 0;
         @include phone-width{
-            font-size: var(--text-large);
             max-height: 50px;
             overflow-y: hidden;
             transition: max-height .3s ease-in;
@@ -111,7 +109,8 @@ onMounted(()=>{
             margin-inline-start: 3vmin;
             margin-inline-end: 3vmin;
             color: $text-color;
-            list-style: disc;
+            overflow-wrap: break-word;
+            text-align: start;
         }
     }
 }
@@ -119,18 +118,24 @@ button.menu-switch{
     display: none;
     @include phone-width{
         display: initial;
+        padding: 3px 6px;
     }
     cursor: pointer;
     margin-left: auto;
     padding: 6px 12px;
     width: fit-content;
-    background-color: $main-color;
+    background-color: transparent;
     border: 1px solid $text-color;
     div{
         width: 36px;
         height: 4px;
         background-color: $text-color;
         margin-block: 6px;
+        @include small-phone-width{
+            width: 12px;
+            margin-block: 2px;
+            height: 2px;
+        }
     }
 }
 .scrollUp{
